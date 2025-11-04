@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import "../styles/Matricular.css";
-import AuthService from "../../services/AuthService.js";
 import AlumnoService from "../../services/AlumnoService.js";
 import CursoService from "../../services/CursoService.js";
+import InscripcionService from "../../services/InscripcionService.js";  // ✅ IMPORTANTE
 
 function Matricular() {
   const [alumnoBusqueda, setAlumnoBusqueda] = useState("");
@@ -16,7 +16,7 @@ function Matricular() {
   const [loadingCursos, setLoadingCursos] = useState(true);
   const [mensaje, setMensaje] = useState("");
 
-
+  // ✅ cargar lista de cursos
   useEffect(() => {
     const fetchCursos = async () => {
       try {
@@ -31,7 +31,7 @@ function Matricular() {
     fetchCursos();
   }, []);
 
- 
+  // ✅ búsqueda de alumnos en tiempo real
   useEffect(() => {
     if (!alumnoBusqueda.trim() || alumnoSeleccionado) {
       setAlumnosFiltrados([]);
@@ -41,8 +41,7 @@ function Matricular() {
     const fetchAlumnos = async () => {
       setLoadingAlumnos(true);
       try {
-      
-        const data = await AlumnoService.searchAlumnos(alumnoBusqueda); 
+        const data = await AlumnoService.searchAlumnos(alumnoBusqueda);
         setAlumnosFiltrados(data);
       } catch (error) {
         console.error("Error al buscar alumnos:", error);
@@ -65,30 +64,28 @@ function Matricular() {
     setAlumnoBusqueda("");
   };
 
+  // ✅ MATRICULAR usando InscripcionService
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     if (!alumnoSeleccionado || !cursoSeleccionado) {
       setMensaje("Seleccioná un alumno y un curso");
       return;
     }
 
     try {
-      await fetch(`https://psis-2025.onrender.com/api/matricular`), {
-        method: "POST",
-        headers: { "Content-Type": "application/json",
-            "Authorization": `Bearer ${AuthService.getToken()}`
-         },
-        body: JSON.stringify({
-          alumnoId: alumnoSeleccionado.id,
-          cursoId: parseInt(cursoSeleccionado),
-        }),
-      };
+      await InscripcionService.matricular({
+        alumnoId: alumnoSeleccionado.id,
+        cursoId: parseInt(cursoSeleccionado),
+      });
 
       setMensaje(
-        `Alumno ${alumnoSeleccionado.nombre} ${alumnoSeleccionado.apellido} matriculado correctamente.`
+        `Alumno ${alumnoSeleccionado.nombres} ${alumnoSeleccionado.apellidos} matriculado correctamente.`
       );
+
       handleLimpiarAlumno();
       setCursoSeleccionado("");
+
     } catch (error) {
       console.error(error);
       setMensaje("No se pudo matricular al alumno");
@@ -150,10 +147,9 @@ function Matricular() {
             )}
           </div>
 
-         <button type="submit" className="btn-submit" disabled={loadingAlumnos || loadingCursos}>
+          <button type="submit" className="btn-submit" disabled={loadingAlumnos || loadingCursos}>
             Matricular Alumno
-        </button>
-
+          </button>
         </form>
 
         {mensaje && <p className="mensaje">{mensaje}</p>}
