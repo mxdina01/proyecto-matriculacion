@@ -82,7 +82,7 @@ function Cursos() {
                         <ul>
                           {alumnosPorCurso[curso.id].map(alumno => (
                             <li key={alumno.id}>
-                              {alumno.nombre} {alumno.apellido}
+                              {alumno.nombres} {alumno.apellidos}
                             </li>
                           ))}
                         </ul>

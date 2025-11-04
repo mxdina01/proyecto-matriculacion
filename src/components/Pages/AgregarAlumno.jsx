@@ -63,7 +63,7 @@ function AgregarAlumno() {
           </div>
 
           <div className="form-group">
-            <label htmlFor="documento">Nro. de documento (*):</label>
+            <label htmlFor="ci">Nro. de documento (*):</label>
             <input
               type="text"
               id="ci"
