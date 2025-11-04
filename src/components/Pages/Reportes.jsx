@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import "../styles/reportes.css";
+import "../styles/Reportes.css";
 import ReporteService from "../../services/ReporteService";
 import AuthService from "../../services/AuthService";
 

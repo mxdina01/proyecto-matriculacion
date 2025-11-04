@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "../styles/agregaralumno.css";
+import "../styles/AgregarAlumno.css";
 import AlumnoService from "../../services/AlumnoService";
 import { useNavigate } from "react-router-dom";
 

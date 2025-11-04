@@ -1,5 +1,5 @@
 import React from "react";
-import "../styles/home.css";
+import "../styles/Home.css";
 import eyeicon from "../../assets/eye.png";
 import plus from "../../assets/plus-small.png";
 import alumno from "../../assets/alumnos.png";
