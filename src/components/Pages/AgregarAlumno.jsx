@@ -44,7 +44,7 @@ function AgregarAlumno() {
               type="text"
               id="nombre"
               value={nombres}
-              onChange={(e) => setNombre(e.target.value)}
+              onChange={(e) => setNombres(e.target.value)}
               placeholder="Escribir nombre"
               required
             />
@@ -56,7 +56,7 @@ function AgregarAlumno() {
               type="text"
               id="apellido"
               value={apellidos}
-              onChange={(e) => setApellido(e.target.value)}
+              onChange={(e) => setApellidos(e.target.value)}
               placeholder="Escribir apellido"
               required
             />
@@ -68,7 +68,7 @@ function AgregarAlumno() {
               type="text"
               id="documento"
               value={ci}
-              onChange={(e) => setDocumento(e.target.value)}
+              onChange={(e) => setCi(e.target.value)}
               placeholder="Número de Cédula"
               required
             />
