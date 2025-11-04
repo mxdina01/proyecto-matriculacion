@@ -73,7 +73,7 @@ function Matricular() {
     }
 
     try {
-      await fetch(`https://psis-2025.onrender.com/api/matriculas`, {
+      await fetch(`https://psis-2025.onrender.com/api/matricular`, {
         method: "POST",
         headers: { "Content-Type": "application/json",
             "Authorization": `Bearer ${AuthService.getToken()}`
