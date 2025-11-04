@@ -73,7 +73,7 @@ function Matricular() {
     }
 
     try {
-      await fetch(`https://psis-2025.onrender.com/api/matricular`, {
+      await fetch(`https://psis-2025.onrender.com/api/matricular`), {
         method: "POST",
         headers: { "Content-Type": "application/json",
             "Authorization": `Bearer ${AuthService.getToken()}`
@@ -82,7 +82,7 @@ function Matricular() {
           alumnoId: alumnoSeleccionado.id,
           cursoId: parseInt(cursoSeleccionado),
         }),
-      });
+      };
 
       setMensaje(
         `Alumno ${alumnoSeleccionado.nombre} ${alumnoSeleccionado.apellido} matriculado correctamente.`
