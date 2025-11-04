@@ -1,0 +1,47 @@
+.alumnos-page{
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+  background-color: #f2f2f2;}
+
+
+.header-alumnos h2{
+
+    font-weight: 450; 
+    margin: 10px;
+    margin-top: 50px;
+    display: inline-block;
+}
+
+.btn-secondary{
+
+font-size: 14px;
+padding:6px 10px ;
+margin-left: 20px;
+margin-top: 10px;
+ background-color: rgb(101, 210, 174);
+ text-decoration: none;
+}
+
+.lista-alumnos{
+    display: block;
+    max-width: 900px;
+    width: 100%;
+    background: #fff;
+    color: #555;
+    text-align: center;
+    padding: 40px 45px;
+    margin-top: 20px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+
+}
+
+.tabla-alumnos th,
+.tabla-alumnos td {
+  padding: 12px 15px;
+  text-align: left;
+}
+

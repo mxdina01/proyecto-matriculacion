@@ -1,0 +1,125 @@
+.matricular-page {
+  background-color: rgb(187, 152, 220);
+  height: 100vh;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+.form-container {
+  max-width: 500px;
+  background: #fff;
+  width: 100%;
+  padding: 30px 40px;
+  border-radius: 20px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transition: all 0.3s ease;
+}
+
+.form-container:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 25px rgba(0, 0, 0, 0.15);
+}
+
+.form-container h2 {
+  font-size: 25px;
+  text-align: center;
+  color: #555;
+  font-weight: 600;
+  margin-bottom: 25px;
+}
+
+.matricular-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.form-group label {
+  color: #555;
+  font-size: 15px;
+  margin-bottom: 8px;
+}
+
+.form-group input,
+.form-group select {
+  background-color: #f8f8f8;
+  border: none;
+  border-bottom: 1px solid #555;
+  padding: 10px;
+  border-radius: 5px 5px 0 0;
+  outline: none;
+  font-size: 15px;
+  transition: all 0.2s ease;
+  color: #333;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+  border-color: #3a5f9e;
+  box-shadow: 0 0 5px rgba(58, 95, 158, 0.4);
+}
+
+.alumnos-lista {
+  list-style: none;
+  margin-top: 5px;
+  padding: 0;
+  max-height: 150px;
+  overflow-y: auto;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background: #fefefe;
+}
+
+.alumnos-lista li {
+  padding: 10px 15px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+  border-bottom: 1px solid #eee;
+}
+
+.alumnos-lista li:last-child {
+  border-bottom: none;
+}
+
+.alumnos-lista li:hover {
+  background-color: #dcd3f0;
+}
+
+.alumnos-lista li.selected {
+  background-color: #b89ce0;
+  color: white;
+  font-weight: 600;
+}
+
+.btn-submit,
+.form-group button {
+  background-color: #3a5f9e;
+  color: white;
+  border: none;
+  padding: 12px;
+  border-radius: 8px;
+  font-size: 15px;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.btn-submit:hover,
+.form-group button:hover {
+  background-color: #2f4970;
+}
+
+.mensaje {
+  margin-top: 15px;
+  color: #c0392b;
+  font-weight: 500;
+  text-align: center;
+}
