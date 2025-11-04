@@ -11,55 +11,32 @@ function Reportes() {
   const [mensaje, setMensaje] = useState("");
 
   useEffect(() => {
-    if (!query.trim()) {
-      setResultados([]);
-      setMensaje("");
+    if (!alumnoBusqueda.trim() || alumnoSeleccionado) {
+      setAlumnosFiltrados([]);
       return;
     }
 
-    const buscarAlumnoYCursos = async () => {
-      setLoading(true);
-      setMensaje("");
+    const fetchAlumnos = async () => {
+      setLoadingAlumnos(true);
       try {
-        
-        const alumnos = await ReporteService.searchAlumnos(query, AuthService.getToken());
-
-        if (alumnos.length === 0) {
-          setResultados([]);
-          setMensaje("No se encontraron alumnos con esa cédula.");
-          return;
-        }
-
-        const alumnoFiltrado = alumnos[0]; 
-
-    
-        const cursos = await ReporteService.getCursosPorAlumno(alumnoFiltrado.id, AuthService.getToken());
-
-        if (cursos.length === 0) {
-          setResultados([]);
-          setMensaje(`El alumno ${alumnoFiltrado.nombre} ${alumnoFiltrado.apellido} no está matriculado en ningún curso.`);
-          return;
-        }
-
-        const matriculas = cursos.map((curso) => ({
-          alumno: alumnoFiltrado,
-          curso,
-        }));
-
-        setResultados(matriculas);
+      
+        const data = await AlumnoService.searchAlumnos(alumnoBusqueda); 
+        setAlumnosFiltrados(data);
       } catch (error) {
-        console.error("Error al buscar matriculados:", error);
-        setResultados([]);
-        setMensaje("Error al cargar los datos del servidor.");
+        console.error("Error al buscar alumnos:", error);
       } finally {
-        setLoading(false);
+        setLoadingAlumnos(false);
       }
     };
 
-    const timeoutId = setTimeout(() => buscarAlumnoYCursos(), 300);
-    return () => clearTimeout(timeoutId);
-  }, [query]);
+    fetchAlumnos();
+  }, [alumnoBusqueda, alumnoSeleccionado]);
 
+  const handleSeleccionarAlumno = (alumno) => {
+    setAlumnoSeleccionado(alumno);
+    setAlumnoBusqueda(`${alumno.nombres} ${alumno.apellidos}`);
+    setAlumnosFiltrados([]);
+  };
   return (
     <div className="reportes-page">
       <Link to="/matricular">
