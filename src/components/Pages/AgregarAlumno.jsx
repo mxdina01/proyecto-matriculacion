@@ -4,24 +4,24 @@ import AlumnoService from "../../services/AlumnoService";
 import { useNavigate } from "react-router-dom";
 
 function AgregarAlumno() {
-  const [nombre, setNombre] = useState("");
-  const [apellido, setApellido] = useState("");
-  const [documento, setDocumento] = useState("");
+  const [nombres, setNombres] = useState("");
+  const [apellidos, setApellidos] = useState("");
+  const [ci, setCi] = useState("");
   const [mensaje, setMensaje] = useState("");
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const nuevoAlumno = { nombre, apellido, documento };
+    const nuevoAlumno = { nombres, apellidos, ci };
 
     try {
       await AlumnoService.addAlumno(nuevoAlumno);
 
       setMensaje("Alumno registrado exitosamente");
-      setNombre("");
-      setApellido("");
-      setDocumento("");
+      setNombres("");
+      setApellidos("");
+      setCi("");
 
 
       setTimeout(() => navigate("/alumnos"), 1500);
@@ -43,7 +43,7 @@ function AgregarAlumno() {
             <input
               type="text"
               id="nombre"
-              value={nombre}
+              value={nombres}
               onChange={(e) => setNombre(e.target.value)}
               placeholder="Escribir nombre"
               required
@@ -55,7 +55,7 @@ function AgregarAlumno() {
             <input
               type="text"
               id="apellido"
-              value={apellido}
+              value={apellidos}
               onChange={(e) => setApellido(e.target.value)}
               placeholder="Escribir apellido"
               required
@@ -67,7 +67,7 @@ function AgregarAlumno() {
             <input
               type="text"
               id="documento"
-              value={documento}
+              value={ci}
               onChange={(e) => setDocumento(e.target.value)}
               placeholder="Número de Cédula"
               required
