@@ -54,9 +54,9 @@ function Alumnos() {
               {alumnos.map((alumno) => (
                 <tr key={alumno.id}>
                   <td>{alumno.id}</td>
-                  <td>{alumno.nombre}</td>
-                  <td>{alumno.apellido}</td>
-                  <td>{alumno.documento}</td>
+                  <td>{alumno.nombres}</td>
+                  <td>{alumno.apellidos}</td>
+                  <td>{alumno.ci}</td>
                 </tr>
               ))}
             </tbody>

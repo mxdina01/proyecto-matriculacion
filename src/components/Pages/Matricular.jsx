@@ -55,7 +55,7 @@ function Matricular() {
 
   const handleSeleccionarAlumno = (alumno) => {
     setAlumnoSeleccionado(alumno);
-    setAlumnoBusqueda(`${alumno.nombre} ${alumno.apellido}`);
+    setAlumnoBusqueda(`${alumno.nombres} ${alumno.apellidos}`);
     setAlumnosFiltrados([]);
   };
 
@@ -122,7 +122,7 @@ function Matricular() {
             <ul className="alumnos-lista">
               {alumnosFiltrados.map((a) => (
                 <li key={a.id} onClick={() => handleSeleccionarAlumno(a)}>
-                  {a.nombre} {a.apellido} - {a.documento}
+                  {a.nombres} {a.apellidos} - {a.ci}
                 </li>
               ))}
             </ul>
