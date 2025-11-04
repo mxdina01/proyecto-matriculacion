@@ -39,10 +39,10 @@ function AgregarAlumno() {
         <h2>Agregar Alumno</h2>
         <form className="alumno-form" onSubmit={handleSubmit}>
           <div className="form-group">
-            <label htmlFor="nombre">Nombre (*):</label>
+            <label htmlFor="nombres">Nombre (*):</label>
             <input
               type="text"
-              id="nombre"
+              id="nombres"
               value={nombres}
               onChange={(e) => setNombres(e.target.value)}
               placeholder="Escribir nombre"
@@ -51,10 +51,10 @@ function AgregarAlumno() {
           </div>
 
           <div className="form-group">
-            <label htmlFor="apellido">Apellido (*):</label>
+            <label htmlFor="apellidos">Apellido (*):</label>
             <input
               type="text"
-              id="apellido"
+              id="apellidos"
               value={apellidos}
               onChange={(e) => setApellidos(e.target.value)}
               placeholder="Escribir apellido"
@@ -66,7 +66,7 @@ function AgregarAlumno() {
             <label htmlFor="documento">Nro. de documento (*):</label>
             <input
               type="text"
-              id="documento"
+              id="ci"
               value={ci}
               onChange={(e) => setCi(e.target.value)}
               placeholder="Número de Cédula"
