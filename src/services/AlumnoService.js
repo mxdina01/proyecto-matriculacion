@@ -1,6 +1,6 @@
 import AuthService from "./AuthService";
 
-const API = "https://jpsis-2025.onrender.com/api/alumnos";
+const API = "https://psis-2025.onrender.com/api/alumnos";
 
 const AlumnoService = {
 
