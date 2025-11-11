@@ -30,7 +30,7 @@ function AppContent() {
   const location = useLocation();
 
   //busca la ruta actual en nuestra lista y ve si debemos ocultar el header
-  const route = routes.find(r => matchPath(r.path, location.pathname));
+const route = routes.find(r => matchPath({ path: r.path, end: true }, location.pathname));
   const hideHeader = route?.hideHeader;
 
   return (
