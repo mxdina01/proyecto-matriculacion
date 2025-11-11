@@ -1,85 +1,74 @@
 /* EditarAlumno.css */
 
-.alumnos-page {
+/* Contenedor principal */
+.editar-container {
+  background-color: #fff;
+  padding: 25px;
+  border-radius: 8px;
   max-width: 500px;
-  margin: 40px auto;
-  padding: 30px;
-  background-color: #fff; /* fondo blanco */
-  border-radius: 12px;
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
-  font-family: 'Roboto', sans-serif;
-}
-
-.alumnos-page h2 {
-  text-align: center;
-  color: #48194a; /* mismo morado que el header de tu app */
-  margin-bottom: 25px;
-}
-
-.alumno-form {
+  margin: 20px auto;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
   display: flex;
   flex-direction: column;
   gap: 15px;
 }
 
+/* Formularios y inputs */
 .alumno-form input {
+  width: 100%;
   padding: 10px 12px;
   border: 1px solid #ccc;
-  border-radius: 8px;
-  font-size: 15px;
-  transition: all 0.3s ease;
+  border-radius: 5px;
+  font-size: 14px;
+  outline: none;
+  transition: 0.2s;
 }
 
 .alumno-form input:focus {
-  border-color: #935a99; /* color morado principal */
+  border-color: #935a99;
   box-shadow: 0 0 5px rgba(147, 90, 153, 0.3);
-  outline: none;
 }
 
+/* Botones */
 .card-buttons {
   display: flex;
-  justify-content: space-between;
-  margin-top: 20px;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 10px;
 }
 
-.card-buttons .btn {
-  flex: 1;
-  margin: 0 5px;
-  padding: 10px;
-  font-size: 15px;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.card-buttons .btn-filled {
+.btn.guardar {
   background-color: #935a99;
-  color: #fff;
+  color: white;
   border: none;
+  padding: 8px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: 0.2s;
 }
 
-.card-buttons .btn-filled:hover {
-  background-color: #7b477f;
+.btn.guardar:hover {
+  background-color: #7b477d;
 }
 
-.card-buttons .btn-outlined {
+.btn.cancelar {
   background-color: #fff;
   color: #935a99;
-  border: 2px solid #935a99;
+  border: 1px solid #935a99;
+  padding: 8px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: 0.2s;
 }
 
-.card-buttons .btn-outlined:hover {
-  background-color: #f7f0f7;
+.btn.cancelar:hover {
+  background-color: #f7eafc;
 }
 
+/* Mensaje de error */
 .error-message {
-  margin-top: 15px;
-  color: #d9534f; /* rojo alerta */
-  font-weight: 500;
-  text-align: center;
-}
-
-p {
-  font-size: 14px;
-  color: #555;
+  color: #d9534f;
+  font-size: 13px;
+  margin-top: 5px;
+  text-align: left;
 }

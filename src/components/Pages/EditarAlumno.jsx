@@ -63,7 +63,7 @@ function EditarAlumno() {
   return (
     <div className="alumnos-page">
       <h2>Editar Alumno</h2>
-
+<div className="editar-container">
       {loading ? (
         <p>Cargando datos del alumno...</p>
       ) : (
@@ -100,15 +100,18 @@ function EditarAlumno() {
             onChange={handleChange}
           />
           <div className="card-buttons">
-            <button type="submit" className="btn btn-filled">Guardar cambios</button>
+            <button type="submit" className="btn guardar">Guardar cambios</button>
             <Link to="/alumnos">
-              <button type="button" className="btn btn-outlined">Cancelar</button>
+              <button type="button" className="btn cancelar">Cancelar</button>
             </Link>
           </div>
           {error && <p className="error-message">{error}</p>}
         </form>
       )}
     </div>
+    </div>
+    
+
   );
 }
 
