@@ -1,63 +1,60 @@
-import React, { lazy, Suspense } from "react";
+import React from "react";
 import "./components/styles/App.css";
 import { BrowserRouter as Router, Routes, Route, useLocation, matchPath } from "react-router-dom";
 import Header from "./components/Header";
+import Home from "./components/Pages/Home";
+import AgregarAlumno from "./components/Pages/AgregarAlumno";
+import Alumnos from "./components/Pages/Alumnos";
+import Matricular from "./components/Pages/Matricular";
+import Cursos from "./components/Pages/Cursos";
+import Login from "./components/Pages/Login";
 import ProtectedRoute from "./components/ProtectedRoute";
+import Register from "./components/Pages/Register";
+import EditarAlumno from "./components/Pages/EditarAlumno";
 
-//lazy loading para que solo carguen en ese isntante las pags que estan siendo visitadas
-const Home = lazy(() => import("./components/Pages/Home"));
-const AgregarAlumno = lazy(() => import("./components/Pages/AgregarAlumno"));
-const Alumnos = lazy(() => import("./components/Pages/Alumnos"));
-const Matricular = lazy(() => import("./components/Pages/Matricular"));
-const Cursos = lazy(() => import("./components/Pages/Cursos"));
-const Login = lazy(() => import("./components/Pages/Login"));
-const Register = lazy(() => import("./components/Pages/Register"));
-const EditarAlumno = lazy(() => import("./components/Pages/EditarAlumno"));
 
-// rutas + header control
+// Lista de rutas
 const routes = [
-  { path: "/", element: <Login />, hideHeader: true },
-  { path: "/login", element: <Login />, hideHeader: true },
-  { path: "/register", element: <Register />, hideHeader: true },
-  { path: "/home", element: <Home />, hideHeader: false },
-  { path: "/alumnos", element: <Alumnos />, hideHeader: false },
-  { path: "/agregaralumno", element: <AgregarAlumno />, hideHeader: false },
-  { path: "/editaralumno/:id", element: <EditarAlumno />, hideHeader: false },
-  { path: "/cursos", element: <Cursos />, hideHeader: false },
-  { path: "/matricular", element: <Matricular />, hideHeader: false },
+  { path: "/", element: <Login />, hideHeader: true, isProtected: false },
+  { path: "/login", element: <Login />, hideHeader: true, isProtected: false },
+  { path: "/register", element: <Register />, hideHeader: true, isProtected: false },
+    { path: "/home", element: <Home />, hideHeader: false, isProtected: true },
+  { path: "/alumnos", element: <Alumnos />, hideHeader: false, isProtected: true },
+  { path: "/agregaralumno", element: <AgregarAlumno />, hideHeader: false, isProtected: true },
+  { path: "/editaralumno/:id", element: <EditarAlumno />, hideHeader: false, isProtected: true },
+  { path: "/cursos", element: <Cursos />, hideHeader: false, isProtected: true },
+  { path: "/matricular", element: <Matricular />, hideHeader: false, isProtected: true },
 ];
 
 function AppContent() {
-  const location = useLocation(); //hook que devuelve location
+  const location = useLocation();
 
-  //fetchea la current ubiccacion + mira si se oculta o no el header
-  const route = routes.find((r) => matchPath({ path: r.path, end: true }, location.pathname));
+  // fetchea la ubicacion actual del user + ver si debe ocultar o no
+  // Usamos 'routes.find' para obtener la configuración de la ruta actual
+  const route = routes.find(r => matchPath({ path: r.path, end: true }, location.pathname));
   const hideHeader = route?.hideHeader;
 
   return (
     <>
-
-     {/* para mostrar el header nms si la variable de hideheader es false*/}
+      {/* 1. Renderizado condicional del Header */}
       {!hideHeader && <Header />}
+      
+      <Routes>
+        {routes
+          .filter(r => !r.isProtected) // Filtra solo rutas públicas
+          .map(r => (
+            <Route key={r.path} path={r.path} element={r.element} />
+          ))}
 
-      {/* manejo de carga */}
-      <Suspense fallback={<div style={{ textAlign: "center", marginTop: "50px" }}>Cargando...</div>}>
-        <Routes>
+        {/* 3. Rutas PROTEGIDAS */}
+        <Route element={<ProtectedRoute />}>
           {routes
-            .filter((r) => r.hideHeader)
-            .map((r) => (
+            .filter(r => r.isProtected) // Filtra solo rutas protegidas
+            .map(r => (
               <Route key={r.path} path={r.path} element={r.element} />
             ))}
-
-          <Route element={<ProtectedRoute />}>
-            {routes
-              .filter((r) => !r.hideHeader)
-              .map((r) => (
-                <Route key={r.path} path={r.path} element={r.element} />
-              ))}
-          </Route>
-        </Routes>
-      </Suspense>
+        </Route>
+      </Routes>
     </>
   );
 }
