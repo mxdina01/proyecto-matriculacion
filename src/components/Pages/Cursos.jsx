@@ -71,7 +71,7 @@ function Cursos() {
     try {
       const todos = await AlumnoService.getAlumnos();
       const inscritos = await InscripcionService.getAlumnosPorCurso(curso.id);
-      const disponibles = todos.filter((a) => !inscritos.some((i) => i.id === a.id));
+      const disponibles = todos.filter((a) => !inscritos.some((i) => i.alumno.id === a.id));
       setAlumnosDisponibles(disponibles);
     } catch (error) {
       console.error(error);
@@ -84,16 +84,30 @@ function Cursos() {
 
     try {
       await InscripcionService.matricular({
-      alumnoId: alumnoSeleccionado.toString(),
-      cursoId: cursoSeleccionado.id.toString(),
-    });
+        alumnoId: alumnoSeleccionado.toString(),
+        cursoId: cursoSeleccionado.id.toString(),
+      });
 
-      const alumnos = await InscripcionService.getPorCurso(cursoSeleccionado.id);
+      const alumnos = await InscripcionService.getAlumnosPorCurso(cursoSeleccionado.id);
       setAlumnosPorCurso((prev) => ({ ...prev, [cursoSeleccionado.id]: alumnos }));
       setModalVisible(false);
     } catch (error) {
       console.error(error);
       alert("No se pudo matricular al alumno.");
+    }
+  };
+
+  // ------------------- ELIMINAR MATRÍCULA -------------------
+  const eliminarMatricula = async (inscripcionId, cursoId) => {
+    if (!window.confirm("¿Seguro que deseas eliminar esta matrícula?")) return;
+
+    try {
+      await InscripcionService.eliminar(inscripcionId);
+      const alumnos = await InscripcionService.getAlumnosPorCurso(cursoId);
+      setAlumnosPorCurso((prev) => ({ ...prev, [cursoId]: alumnos }));
+    } catch (error) {
+      console.error(error);
+      alert("No se pudo eliminar la matrícula.");
     }
   };
 
@@ -208,9 +222,17 @@ function Cursos() {
                       <p>No hay alumnos matriculados.</p>
                     ) : (
                       <ul>
-                        {alumnosPorCurso[curso.id].map((a) => (
-                          <li key={a.id}>
-                            {a.nombres} {a.apellidos}
+                        {alumnosPorCurso[curso.id].map((inscripcion) => (
+                          <li key={inscripcion.id}>
+                            {inscripcion.alumno.nombres} {inscripcion.alumno.apellidos}{" "}
+                            <button
+                              className="btn-eliminar"
+                              onClick={() =>
+                                eliminarMatricula(inscripcion.id, curso.id)
+                              }
+                            >
+                              Eliminar
+                            </button>
                           </li>
                         ))}
                       </ul>
