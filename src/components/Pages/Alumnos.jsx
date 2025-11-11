@@ -37,7 +37,7 @@ function Alumnos() {
     if (!window.confirm("¿Seguro que querés eliminar este alumno?")) return;
     try {
       await AlumnoService.deleteAlumno(id);
-      setAlumnos(alumnos.filter((a) => a.id !== id));
+      setAlumnos(alumnos.filter((a) => alumno.id !== id));
       alert("Alumno eliminado correctamente.");
     } catch (err) {
       console.error("Error al eliminar:", err);
