@@ -73,6 +73,16 @@ const handleView = async (alumno) => {
       <Link to="/agregaralumno">
         <button className="btn btn-filled">Agregar Alumno</button>
       </Link>
+            {/* Modal */}
+      {modalVisible && modalAlumno && (
+        <div className="modal-overlay" onClick={closeModal}>
+          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+            <h3>{modalAlumno.nombres} {modalAlumno.apellidos}</h3>
+            <p><strong>CI:</strong> {modalAlumno.ci}</p>
+            <button className="btn btn-outlined" onClick={closeModal}>Cerrar</button>
+          </div>
+        </div>
+      )}
 
       <div className="alumnos-list-container">
         <input
@@ -107,16 +117,7 @@ const handleView = async (alumno) => {
         ))}
       </div>
 
-      {/* Modal */}
-      {modalVisible && modalAlumno && (
-        <div className="modal-overlay" onClick={closeModal}>
-          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-            <h3>{modalAlumno.nombres} {modalAlumno.apellidos}</h3>
-            <p><strong>CI:</strong> {modalAlumno.ci}</p>
-            <button className="btn btn-outlined" onClick={closeModal}>Cerrar</button>
-          </div>
-        </div>
-      )}
+
     </div>
   );
 }
