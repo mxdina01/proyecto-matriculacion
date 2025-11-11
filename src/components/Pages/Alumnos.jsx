@@ -6,10 +6,10 @@ import "../styles/Alumnos.css";
 import "../styles/Buttons.css";
 
 function Alumnos() {
-  const [alumnos, setAlumnos] = useState([]);
+  const [alumnos, setAlumnos] = useState([]); //GUARDA la lista de alumn que viene del server
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-  const [search, setSearch] = useState("");
+  const [search, setSearch] = useState(""); //para la busqueda
 
   const [modalVisible, setModalVisible] = useState(false);
   const [modalAlumno, setModalAlumno] = useState(null);
@@ -18,7 +18,7 @@ function Alumnos() {
     setLoading(true);
     setError("");
     try {
-      const response = await AlumnoService.getAlumnos();
+      const response = await AlumnoService.getAlumnos(); //fetchea alumnos del back
       setAlumnos(response);
     } catch (err) {
       console.error("Error en fetchAlumnos:", err);
@@ -33,7 +33,7 @@ function Alumnos() {
     fetchAlumnos();
   }, []);
 
-  const handleDelete = async (id) => {
+  const handleDelete = async (id) => { //fetchea la opcion de eliminar alumnos del back
     if (!window.confirm("¿Seguro que querés eliminar este alumno?")) return;
     try {
       await AlumnoService.deleteAlumno(id);
@@ -45,7 +45,7 @@ function Alumnos() {
     }
   };
 
-  const filteredAlumnos = alumnos.filter((alumno) =>
+  const filteredAlumnos = alumnos.filter((alumno) => //filtra busqueda segun input del user
     `${alumno.nombres} ${alumno.apellidos}`.toLowerCase().includes(search.toLowerCase())
   );
 
@@ -68,7 +68,7 @@ const handleView = async (alumno) => {
   }
 };
 
-
+//render
 
   return (
     <div className="alumnos-page">
