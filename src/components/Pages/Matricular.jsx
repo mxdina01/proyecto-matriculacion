@@ -8,15 +8,31 @@ function Matricular() {
   const [alumnoBusqueda, setAlumnoBusqueda] = useState("");
   const [alumnosFiltrados, setAlumnosFiltrados] = useState([]);
   const [alumnoSeleccionado, setAlumnoSeleccionado] = useState(null);
+  const [todosAlumnos, setTodosAlumnos] = useState([]); // <-- traemos todos una sola vez
 
   const [cursos, setCursos] = useState([]);
   const [cursoSeleccionado, setCursoSeleccionado] = useState("");
 
-  const [loadingAlumnos, setLoadingAlumnos] = useState(false);
+  const [loadingAlumnos, setLoadingAlumnos] = useState(true);
   const [loadingCursos, setLoadingCursos] = useState(true);
   const [mensaje, setMensaje] = useState("");
 
-  // ✅ cargar lista de cursos
+  // Cargar todos los alumnos al inicio
+  useEffect(() => {
+    const fetchAlumnos = async () => {
+      try {
+        const data = await AlumnoService.getAlumnos();
+        setTodosAlumnos(data);
+      } catch (error) {
+        console.error("Error al cargar alumnos:", error);
+      } finally {
+        setLoadingAlumnos(false);
+      }
+    };
+    fetchAlumnos();
+  }, []);
+
+  // Cargar cursos
   useEffect(() => {
     const fetchCursos = async () => {
       try {
@@ -31,27 +47,21 @@ function Matricular() {
     fetchCursos();
   }, []);
 
-  // ✅ Búsqueda en tiempo real con debounce
+  // Filtrado en tiempo real local
   useEffect(() => {
-    if (!alumnoBusqueda.trim()) {
+    if (!alumnoBusqueda.trim() || alumnoSeleccionado) {
       setAlumnosFiltrados([]);
       return;
     }
 
-    const timeout = setTimeout(async () => {
-      setLoadingAlumnos(true);
-      try {
-        const data = await AlumnoService.searchAlumnos(alumnoBusqueda);
-        setAlumnosFiltrados(data);
-      } catch (error) {
-        console.error("Error al buscar alumnos:", error);
-      } finally {
-        setLoadingAlumnos(false);
-      }
-    }, 300); // espera 300ms después de tipear
+    const filtrados = todosAlumnos.filter((a) =>
+      a.nombres.toLowerCase().includes(alumnoBusqueda.toLowerCase()) ||
+      a.apellidos.toLowerCase().includes(alumnoBusqueda.toLowerCase()) ||
+      a.ci.includes(alumnoBusqueda)
+    );
 
-    return () => clearTimeout(timeout); // limpia el timeout si siguen escribiendo
-  }, [alumnoBusqueda]);
+    setAlumnosFiltrados(filtrados);
+  }, [alumnoBusqueda, alumnoSeleccionado, todosAlumnos]);
 
   const handleSeleccionarAlumno = (alumno) => {
     setAlumnoSeleccionado(alumno);
@@ -67,7 +77,6 @@ function Matricular() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     if (!alumnoSeleccionado || !cursoSeleccionado) {
       setMensaje("Seleccioná un alumno y un curso");
       return;
@@ -78,11 +87,9 @@ function Matricular() {
         alumnoId: alumnoSeleccionado.id,
         cursoId: parseInt(cursoSeleccionado),
       });
-
       setMensaje(
         `Alumno ${alumnoSeleccionado.nombres} ${alumnoSeleccionado.apellidos} matriculado correctamente.`
       );
-
       handleLimpiarAlumno();
       setCursoSeleccionado("");
     } catch (error) {
@@ -106,7 +113,7 @@ function Matricular() {
               value={alumnoBusqueda}
               onChange={(e) => {
                 setAlumnoBusqueda(e.target.value);
-                setAlumnoSeleccionado(null); // si escriben, resetea selección
+                setAlumnoSeleccionado(null);
               }}
             />
             {alumnoSeleccionado && (
