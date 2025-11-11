@@ -52,7 +52,7 @@ function Cursos() {
 
     setCargandoAlumnos((prev) => ({ ...prev, [cursoId]: true }));
     try {
-      const inscripciones = await InscripcionService.getPorCurso(cursoId);
+      const inscripciones = await InscripcionService.getAlumnosPorCurso(cursoId);
       setInscripcionesPorCurso((prev) => ({ ...prev, [cursoId]: inscripciones }));
     } catch (error) {
       console.error(error);
@@ -72,7 +72,7 @@ function Cursos() {
       const todos = await AlumnoService.getAlumnos();
       const inscritos = await InscripcionService.getAlumnosPorCurso(curso.id);
       const disponibles = todos.filter(
-        (a) => !inscritos.some((i) => i.id === a.id)
+        (a) => !inscritos.some((i) => i.alumno.id === a.id) // Corregido
       );
       setAlumnosDisponibles(disponibles);
     } catch (error) {
@@ -91,7 +91,7 @@ function Cursos() {
       });
 
       // Actualizar inscripciones del curso
-      const inscripciones = await InscripcionService.getPorCurso(cursoSeleccionado.id);
+      const inscripciones = await InscripcionService.getAlumnosPorCurso(cursoSeleccionado.id);
       setInscripcionesPorCurso((prev) => ({
         ...prev,
         [cursoSeleccionado.id]: inscripciones,
@@ -110,7 +110,7 @@ function Cursos() {
 
     try {
       await InscripcionService.eliminar(inscripcionId);
-      const inscripciones = await InscripcionService.getPorCurso(cursoId);
+      const inscripciones = await InscripcionService.getAlumnosPorCurso(cursoId);
       setInscripcionesPorCurso((prev) => ({ ...prev, [cursoId]: inscripciones }));
     } catch (error) {
       console.error(error);
