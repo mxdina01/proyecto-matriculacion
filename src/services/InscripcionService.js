@@ -25,18 +25,19 @@ const InscripcionService = {
 
   // Obtener alumnos de un curso
   getAlumnosPorCurso: async (cursoId) => {
-    try {
-      const res = await fetch(`${API}/reporte/alumnos-por-curso/${cursoId}`, {
-        headers: AuthService.getAuthHeaders()
-      });
-      const data = await res.json().catch(() => ([]));
-      if (!res.ok) throw new Error(data.message || "Error al obtener alumnos por curso");
-      return data;
-    } catch (error) {
-      console.error("InscripcionService.getAlumnosPorCurso:", error);
-      throw error;
-    }
-  },
+  try {
+    const res = await fetch(`https://psis-2025.onrender.com/api/inscripciones/por-curso/${cursoId}`, {
+      headers: AuthService.getAuthHeaders(),
+    });
+    const data = await res.json().catch(() => ([]));
+    if (!res.ok) throw new Error(data.message || "Error al obtener alumnos por curso");
+    return data;
+  } catch (error) {
+    console.error("InscripcionService.getAlumnosPorCurso:", error);
+    throw error;
+  }
+},
+
 
   // Obtener cursos de un alumno
   getCursosPorAlumno: async (alumnoId) => {
