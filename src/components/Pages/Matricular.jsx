@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import "../styles/Matricular.css";
 import AlumnoService from "../../services/AlumnoService.js";
 import CursoService from "../../services/CursoService.js";
-import InscripcionService from "../../services/InscripcionService.js";  // ✅ IMPORTANTE
+import InscripcionService from "../../services/InscripcionService.js";
 
 function Matricular() {
   const [alumnoBusqueda, setAlumnoBusqueda] = useState("");
@@ -31,14 +31,14 @@ function Matricular() {
     fetchCursos();
   }, []);
 
-  // ✅ búsqueda de alumnos en tiempo real
+  // ✅ Búsqueda en tiempo real con debounce
   useEffect(() => {
     if (!alumnoBusqueda.trim()) {
       setAlumnosFiltrados([]);
       return;
     }
 
-    const fetchAlumnos = async () => {
+    const timeout = setTimeout(async () => {
       setLoadingAlumnos(true);
       try {
         const data = await AlumnoService.searchAlumnos(alumnoBusqueda);
@@ -48,9 +48,9 @@ function Matricular() {
       } finally {
         setLoadingAlumnos(false);
       }
-    };
+    }, 300); // espera 300ms después de tipear
 
-    fetchAlumnos();
+    return () => clearTimeout(timeout); // limpia el timeout si siguen escribiendo
   }, [alumnoBusqueda]);
 
   const handleSeleccionarAlumno = (alumno) => {
@@ -65,7 +65,6 @@ function Matricular() {
     setAlumnosFiltrados([]);
   };
 
-  // ✅ MATRICULAR usando InscripcionService
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -86,7 +85,6 @@ function Matricular() {
 
       handleLimpiarAlumno();
       setCursoSeleccionado("");
-
     } catch (error) {
       console.error(error);
       setMensaje("No se pudo matricular al alumno");
@@ -108,7 +106,7 @@ function Matricular() {
               value={alumnoBusqueda}
               onChange={(e) => {
                 setAlumnoBusqueda(e.target.value);
-                setAlumnoSeleccionado(null); // resetear selección si escriben algo nuevo
+                setAlumnoSeleccionado(null); // si escriben, resetea selección
               }}
             />
             {alumnoSeleccionado && (
