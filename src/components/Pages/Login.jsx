@@ -7,6 +7,7 @@ import "../styles/auth.css";
 function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
@@ -15,11 +16,14 @@ function Login() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
+    setLoading(true);
     try {
       await AuthService.login(username, password);
       navigate("/home");
     } catch (err) {
       setError(err.message);
+    } finally {
+        setLoading(false);
     }
   };
 
