@@ -119,23 +119,30 @@ function Cursos() {
   };
 
   // ------------------- BUSCAR ALUMNOS (AUTOCOMPLETE) -------------------
-  useEffect(() => {
-    const delay = setTimeout(async () => {
-      if (!busquedaAlumno.trim() || alumnoBuscado) {
-        setResultadosBusqueda([]);
-        return;
-      }
-      try {
-        const data = await AlumnoService.searchAlumnos(busquedaAlumno);
-        setResultadosBusqueda(data);
-      } catch (error) {
-        console.error(error);
-        setResultadosBusqueda([]);
-      }
-    }, 400);
+useEffect(() => {
+  const delay = setTimeout(async () => {
+    if (!busquedaAlumno.trim() || alumnoBuscado) {
+      setResultadosBusqueda([]);
+      return;
+    }
+    try {
+      const data = await AlumnoService.getAlumnos(); // Traemos todos los alumnos
+      // Filtramos localmente según lo que el usuario escribe
+      const filtrados = data.filter((a) =>
+        a.nombres.toLowerCase().includes(busquedaAlumno.toLowerCase()) ||
+        a.apellidos.toLowerCase().includes(busquedaAlumno.toLowerCase()) ||
+        a.ci.includes(busquedaAlumno)
+      );
+      setResultadosBusqueda(filtrados);
+    } catch (error) {
+      console.error(error);
+      setResultadosBusqueda([]);
+    }
+  }, 400);
 
-    return () => clearTimeout(delay);
-  }, [busquedaAlumno, alumnoBuscado]);
+  return () => clearTimeout(delay);
+}, [busquedaAlumno, alumnoBuscado]);
+
 
   // ------------------- OBTENER CURSOS POR ALUMNO -------------------
   useEffect(() => {
