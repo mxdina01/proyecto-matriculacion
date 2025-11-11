@@ -30,14 +30,8 @@
 }
 
 /* Botones */
-.card-buttons {
-  display: flex;
-  justify-content: flex-end;
-  gap: 10px;
-  margin-top: 10px;
-}
 
-.btn.guardar {
+.btn-guardar {
   background-color: #935a99;
   color: white;
   border: none;
@@ -47,11 +41,11 @@
   transition: 0.2s;
 }
 
-.btn.guardar:hover {
+.btn-guardar:hover {
   background-color: #7b477d;
 }
 
-.btn.cancelar {
+.btn-cancelar {
   background-color: #fff;
   color: #935a99;
   border: 1px solid #935a99;
@@ -61,7 +55,7 @@
   transition: 0.2s;
 }
 
-.btn.cancelar:hover {
+.btn-cancelar:hover {
   background-color: #f7eafc;
 }
 

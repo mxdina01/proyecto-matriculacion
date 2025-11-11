@@ -100,9 +100,9 @@ function EditarAlumno() {
             onChange={handleChange}
           />
           <div className="card-buttons">
-            <button type="submit" className="btn guardar">Guardar cambios</button>
+            <button type="submit" className="btn-guardar">Guardar cambios</button>
             <Link to="/alumnos">
-              <button type="button" className="btn cancelar">Cancelar</button>
+              <button type="button" className="btn-cancelar">Cancelar</button>
             </Link>
           </div>
           {error && <p className="error-message">{error}</p>}
