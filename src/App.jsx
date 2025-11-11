@@ -10,6 +10,7 @@ import Cursos from "./components/Pages/Cursos";
 import Login from "./components/Pages/Login";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Register from "./components/Pages/Register";
+import EditarAlumno from "./components/Pages/EditarAlumno";
 
 //Lista de rutas + ocultar headers
 const routes = [
@@ -19,6 +20,7 @@ const routes = [
   { path: "/home", element: <Home />, hideHeader: false},
   { path: "/alumnos", element: <Alumnos />, hideHeader: false},
   { path: "/agregaralumno", element: <AgregarAlumno/>, hideHeader: false},
+  {path: "/editaralumno", element: <EditarAlumno/>, hideHeader:false},
   { path: "/cursos", element: <Cursos/>, hideHeader: false},
   { path: "/matricular", element: <Matricular/>, hideHeader: false},
 
