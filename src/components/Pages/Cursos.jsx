@@ -71,7 +71,7 @@ function Cursos() {
     try {
       const todos = await AlumnoService.getAlumnos();
       const inscritos = await InscripcionService.getAlumnosPorCurso(curso.id);
-      const disponibles = todos.filter((a) => !inscritos.some((i) => i.alumno.id === a.id));
+      const disponibles = todos.filter((a) => !inscritos.some((i) => i.id === a.id));
       setAlumnosDisponibles(disponibles);
     } catch (error) {
       console.error(error);
@@ -97,12 +97,12 @@ function Cursos() {
     }
   };
 
-  // ------------------- ELIMINAR MATRÍCULA -------------------
-  const eliminarMatricula = async (inscripcionId, cursoId) => {
+  // ------------------- ELIMINAR MATRICULA -------------------
+  const eliminarMatricula = async (alumnoId, cursoId) => {
     if (!window.confirm("¿Seguro que deseas eliminar esta matrícula?")) return;
 
     try {
-      await InscripcionService.eliminar(inscripcionId);
+      await InscripcionService.eliminar({ alumnoId, cursoId });
       const alumnos = await InscripcionService.getAlumnosPorCurso(cursoId);
       setAlumnosPorCurso((prev) => ({ ...prev, [cursoId]: alumnos }));
     } catch (error) {
@@ -222,14 +222,12 @@ function Cursos() {
                       <p>No hay alumnos matriculados.</p>
                     ) : (
                       <ul>
-                        {alumnosPorCurso[curso.id].map((inscripcion) => (
-                          <li key={inscripcion.id}>
-                            {inscripcion.alumno.nombres} {inscripcion.alumno.apellidos}{" "}
+                        {alumnosPorCurso[curso.id].map((a) => (
+                          <li key={a.id}>
+                            {a.nombres} {a.apellidos}{" "}
                             <button
                               className="btn-eliminar"
-                              onClick={() =>
-                                eliminarMatricula(inscripcion.id, curso.id)
-                              }
+                              onClick={() => eliminarMatricula(a.id, curso.id)}
                             >
                               Eliminar
                             </button>
