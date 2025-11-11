@@ -4,9 +4,7 @@ import AlumnoService from "../../services/AlumnoService";
 import "../styles/EditarAlumno.css";
 import "../styles/Buttons.css";
 
-// Página para editar un alumno existente
 function EditarAlumno() {
-  // 1. Estados principales
   const [alumno, setAlumno] = useState({
     nombres: "",
     apellidos: "",
@@ -18,12 +16,12 @@ function EditarAlumno() {
   const navigate = useNavigate();
   const { id } = useParams(); // obtiene el id desde la URL
 
-  // 2. Función para cargar los datos del alumno
+  // función para cargar los datos del alumno
   const fetchAlumno = async () => {
     setLoading(true);
     setError("");
     try {
-      const data = await AlumnoService.getAlumnoById(id); // necesitas agregar esta función en AlumnoService
+      const data = await AlumnoService.getAlumnoById(id); 
       setAlumno(data);
     } catch (err) {
       console.error("Error al cargar alumno:", err);
@@ -33,18 +31,18 @@ function EditarAlumno() {
     }
   };
 
-  // 3. useEffect para cargar alumno al montar el componente
+  // useEffect para cargar alumno al montar el componente
   useEffect(() => {
     fetchAlumno();
   }, [id]);
 
-  // 4. Función para manejar cambios en los inputs
+  // función para manejar cambios en los inputs
   const handleChange = (e) => {
     const { name, value } = e.target;
     setAlumno((prev) => ({ ...prev, [name]: value }));
   };
 
-  // 5. Función para enviar los cambios al backend
+  // función para enviar los cambios al backend
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
@@ -58,7 +56,7 @@ function EditarAlumno() {
     }
   };
 
-  // 6. Renderizado del componente
+  
   return (
     <div className="alumnos-page">
       <h2>Editar Alumno</h2>

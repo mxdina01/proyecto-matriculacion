@@ -6,28 +6,27 @@ import InscripcionService from "../../services/InscripcionService";
 import AlumnoService from "../../services/AlumnoService";
 
 function Cursos() {
-  // --- ESTADOS PRINCIPALES ---
   const [cursos, setCursos] = useState([]);
   const [loading, setLoading] = useState(true);
   const [mensaje, setMensaje] = useState("");
 
-  // --- INSCRIPCIONES POR CURSO ---
+  // inscripciones x curso
   const [inscripcionesPorCurso, setInscripcionesPorCurso] = useState({});
   const [cargandoAlumnos, setCargandoAlumnos] = useState({});
 
-  // --- MODAL MATRICULACIÓN ---
+  // pop-up de matriculacion
   const [modalVisible, setModalVisible] = useState(false);
   const [cursoSeleccionado, setCursoSeleccionado] = useState(null);
   const [alumnosDisponibles, setAlumnosDisponibles] = useState([]);
   const [alumnoSeleccionado, setAlumnoSeleccionado] = useState("");
 
-  // --- BUSQUEDA CURSOS POR ALUMNO ---
+  //buscar cursos por alumno
   const [busquedaAlumno, setBusquedaAlumno] = useState("");
   const [resultadosBusqueda, setResultadosBusqueda] = useState([]);
   const [alumnoBuscado, setAlumnoBuscado] = useState(null);
   const [cursosPorAlumno, setCursosPorAlumno] = useState([]);
 
-  // ------------------- CARGAR CURSOS -------------------
+  //llamar los cursos del back
   useEffect(() => {
     const fetchCursos = async () => {
       try {
@@ -43,16 +42,16 @@ function Cursos() {
     fetchCursos();
   }, []);
 
-  // ------------------- TOGGLE ALUMNOS POR CURSO -------------------
+  //mostar slash ocultar alumnos por curso
   const toggleAlumnos = async (cursoId) => {
     if (inscripcionesPorCurso[cursoId]) {
       setInscripcionesPorCurso((prev) => ({ ...prev, [cursoId]: null }));
       return;
     }
 
-    setCargandoAlumnos((prev) => ({ ...prev, [cursoId]: true }));
+    setCargandoAlumnos((prev) => ({ ...prev, [cursoId]: true })); //mostrar indicacion de q cargan los alumnos
     try {
-      const inscripciones = await InscripcionService.getAlumnosPorCurso(cursoId);
+      const inscripciones = await InscripcionService.getAlumnosPorCurso(cursoId);  //llama api para ver matrc
       setInscripcionesPorCurso((prev) => ({ ...prev, [cursoId]: inscripciones }));
     } catch (error) {
       console.error(error);
@@ -62,17 +61,17 @@ function Cursos() {
     }
   };
 
-  // ------------------- MODAL MATRICULAR -------------------
-  const abrirModalMatricula = async (curso) => {
+  // pop up matricular
+  const abrirModalMatricula = async (curso) => { //configura el popup
     setCursoSeleccionado(curso);
     setModalVisible(true);
     setAlumnoSeleccionado("");
-
+//lama a todos los alumnos ya matriculados en dicho curso
     try {
       const todos = await AlumnoService.getAlumnos();
       const inscritos = await InscripcionService.getAlumnosPorCurso(curso.id);
-      const disponibles = todos.filter(
-        (a) => !inscritos.some((i) => i.alumno.id === a.id) // Corregido
+      const disponibles = todos.filter( //calcula que alumnos quedan disponibles para matricular 
+        (a) => !inscritos.some((i) => i.alumno.id === a.id) 
       );
       setAlumnosDisponibles(disponibles);
     } catch (error) {
@@ -81,11 +80,11 @@ function Cursos() {
     }
   };
 
-  const matricularAlumno = async () => {
+  const matricularAlumno = async () => { //envia la matricula 
     if (!alumnoSeleccionado) return;
 
     try {
-      await InscripcionService.matricular({
+      await InscripcionService.matricular({ 
         alumnoId: alumnoSeleccionado.toString(),
         cursoId: cursoSeleccionado.id.toString(),
       });
@@ -104,13 +103,13 @@ function Cursos() {
     }
   };
 
-  // ------------------- ELIMINAR MATRICULA -------------------
-  const eliminarMatricula = async (inscripcionId, cursoId) => {
+  // delete matriculado
+  const eliminarMatricula = async (inscripcionId, cursoId) => { 
     if (!window.confirm("¿Seguro que deseas eliminar esta matrícula?")) return;
 
     try {
-      await InscripcionService.eliminar(inscripcionId);
-      const inscripciones = await InscripcionService.getAlumnosPorCurso(cursoId);
+      await InscripcionService.eliminar(inscripcionId); //llama a la api delete
+      const inscripciones = await InscripcionService.getAlumnosPorCurso(cursoId); //refreca la lista 
       setInscripcionesPorCurso((prev) => ({ ...prev, [cursoId]: inscripciones }));
     } catch (error) {
       console.error(error);
@@ -118,9 +117,9 @@ function Cursos() {
     }
   };
 
-  // ------------------- BUSCAR ALUMNOS (AUTOCOMPLETE) -------------------
+  //busqueda componente 
 useEffect(() => {
-  const delay = setTimeout(async () => {
+  const delay = setTimeout(async () => { //debounce pa q nomas se ejecute cuando el user deje de tipear
     if (!busquedaAlumno.trim() || alumnoBuscado) {
       setResultadosBusqueda([]);
       return;
@@ -141,11 +140,11 @@ useEffect(() => {
   }, 400);
 
   return () => clearTimeout(delay);
-}, [busquedaAlumno, alumnoBuscado]);
+}, [busquedaAlumno, alumnoBuscado]); 
 
 
-  // ------------------- OBTENER CURSOS POR ALUMNO -------------------
-  useEffect(() => {
+  //cursos por alumno
+    useEffect(() => {
     const fetchCursosPorAlumno = async () => {
       if (!alumnoBuscado) {
         setCursosPorAlumno([]);
@@ -160,7 +159,7 @@ useEffect(() => {
       }
     };
     fetchCursosPorAlumno();
-  }, [alumnoBuscado]);
+  }, [alumnoBuscado]); //se ejecuta cada q cambie el alumno buscado
 
   const seleccionarAlumnoBuscado = (alumno) => {
     setAlumnoBuscado(alumno);
@@ -168,7 +167,7 @@ useEffect(() => {
     setResultadosBusqueda([]);
   };
 
-  // ------------------- RENDER -------------------
+  
   return (
     <div className="cursos-page">
       <div className="header-cursos">

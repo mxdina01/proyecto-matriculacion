@@ -3,31 +3,31 @@ import "../styles/AgregarAlumno.css";
 import AlumnoService from "../../services/AlumnoService";
 import { useNavigate } from "react-router-dom";
 
-function AgregarAlumno() {
+function AgregarAlumno() { //guarda inputs del user para agg alumno
   const [nombres, setNombres] = useState("");
   const [apellidos, setApellidos] = useState("");
   const [ci, setCi] = useState("");
   const [mensaje, setMensaje] = useState("");
   const navigate = useNavigate();
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e) => { //se dispara cuando el user submitea el form
     e.preventDefault();
 
-    const nuevoAlumno = { nombres, apellidos, ci };
+    const nuevoAlumno = { nombres, apellidos, ci }; //crea nuevo alumno con said datos 
 
-    try {
+    try { //llama al POST  del back con los datos del new student
       await AlumnoService.addAlumno(nuevoAlumno);
 
-      setMensaje("Alumno registrado exitosamente");
+      setMensaje("Alumno registrado exitosamente"); //if everything goes right 
       setNombres("");
       setApellidos("");
       setCi("");
 
 
-      setTimeout(() => navigate("/alumnos"), 1500);
+      setTimeout(() => navigate("/alumnos"), 1500); 
 
 
-    } catch (error) {
+    } catch (error) { //si la api devuelve errores etcc
       console.error("Error al agregar alumno:", error);
       setMensaje("No se pudo registrar el alumno.");
     }
