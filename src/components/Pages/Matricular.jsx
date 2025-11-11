@@ -33,7 +33,7 @@ function Matricular() {
 
   // ✅ búsqueda de alumnos en tiempo real
   useEffect(() => {
-    if (!alumnoBusqueda.trim() || alumnoSeleccionado) {
+    if (!alumnoBusqueda.trim()) {
       setAlumnosFiltrados([]);
       return;
     }
@@ -51,7 +51,7 @@ function Matricular() {
     };
 
     fetchAlumnos();
-  }, [alumnoBusqueda, alumnoSeleccionado]);
+  }, [alumnoBusqueda]);
 
   const handleSeleccionarAlumno = (alumno) => {
     setAlumnoSeleccionado(alumno);
@@ -62,6 +62,7 @@ function Matricular() {
   const handleLimpiarAlumno = () => {
     setAlumnoSeleccionado(null);
     setAlumnoBusqueda("");
+    setAlumnosFiltrados([]);
   };
 
   // ✅ MATRICULAR usando InscripcionService
@@ -105,8 +106,10 @@ function Matricular() {
               id="alumno"
               placeholder="Nombre o nro de documento"
               value={alumnoBusqueda}
-              onChange={(e) => setAlumnoBusqueda(e.target.value)}
-              disabled={!!alumnoSeleccionado}
+              onChange={(e) => {
+                setAlumnoBusqueda(e.target.value);
+                setAlumnoSeleccionado(null); // resetear selección si escriben algo nuevo
+              }}
             />
             {alumnoSeleccionado && (
               <button type="button" onClick={handleLimpiarAlumno}>
@@ -116,6 +119,7 @@ function Matricular() {
           </div>
 
           {loadingAlumnos && <p>Cargando alumnos...</p>}
+
           {alumnosFiltrados.length > 0 && (
             <ul className="alumnos-lista">
               {alumnosFiltrados.map((a) => (
