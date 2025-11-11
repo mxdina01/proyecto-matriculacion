@@ -4,6 +4,22 @@ const API = "https://psis-2025.onrender.com/api/alumnos"; //define la url base
 
 
 const AlumnoService = {
+  
+  // Obtener un alumno por su ID
+getAlumnoById: async (id) => {
+  try {
+    const res = await fetch(`${API}/${id}`, { headers: AuthService.getAuthHeaders() });
+    if (!res.ok) {
+      const errorData = await res.json().catch(() => ({}));
+      throw new Error(errorData.message || "Error al obtener el alumno");
+    }
+    return await res.json();
+  } catch (error) {
+    console.error("AlumnoService.getAlumnoById:", error);
+    throw error;
+  }
+},
+
 
   //obtener todos los alumnos del back
   getAlumnos: async () => {

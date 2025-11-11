@@ -11,7 +11,6 @@ function EditarAlumno() {
     nombres: "",
     apellidos: "",
     ci: "",
-    email: "",
   });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -92,13 +91,7 @@ function EditarAlumno() {
             onChange={handleChange}
             required
           />
-          <input
-            type="email"
-            name="email"
-            placeholder="Email"
-            value={alumno.email}
-            onChange={handleChange}
-          />
+       
           <div className="card-buttons">
             <button type="submit" className="btn-guardar">Guardar cambios</button>
             <Link to="/alumnos">

@@ -48,14 +48,25 @@ function Alumnos() {
     `${alumno.nombres} ${alumno.apellidos}`.toLowerCase().includes(search.toLowerCase())
   );
 
-  const handleView = (alumno) => {
-    setModalAlumno(alumno);
+// modal
+const handleView = async (alumno) => {
+  try {
+    const data = await AlumnoService.getAlumnoById(alumno.id); // trae info completa
+    setModalAlumno(data);
     setModalVisible(true);
-  };
-  const closeModal = () => {
-    setModalVisible(false);
-    setModalAlumno(null);
-  };
+  } catch (err) {
+    console.error(err);
+    alert("No se pudo cargar la información del alumno");
+  } 
+
+  // cerrar modal
+const closeModal = () => {
+  setModalVisible(false);
+  setModalAlumno(null);
+};
+
+};
+
 
   return (
     <div className="alumnos-page">
