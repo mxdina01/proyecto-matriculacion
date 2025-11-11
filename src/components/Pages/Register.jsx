@@ -7,9 +7,10 @@ import "../styles/auth.css";
 function Register() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [rol] = useState("user");
+  const [rol] = useState("user"); //fijo
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
+  const [loading, setLoading] = useState("false");
   const navigate = useNavigate();
 
 
@@ -57,7 +58,10 @@ function Register() {
             required
           />
 
-          <button type="submit">Registrarse</button>
+          <button type="submit" disabled={loading}>
+        {loading ? "Registrando..." : "Registrarse"}
+          </button>
+
           {error && <span className="error-msg">{error}</span>}
           {success && <span className="success-msg">{success}</span>}
         </form>
