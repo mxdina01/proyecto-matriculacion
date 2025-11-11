@@ -52,7 +52,7 @@ function Cursos() {
 
     setCargandoAlumnos((prev) => ({ ...prev, [cursoId]: true }));
     try {
-      const alumnos = await InscripcionService.getPorCurso(cursoId);
+      const alumnos = await InscripcionService.getAlumnosPorCurso(cursoId);
       setAlumnosPorCurso((prev) => ({ ...prev, [cursoId]: alumnos }));
     } catch (error) {
       console.error(error);
@@ -70,7 +70,7 @@ function Cursos() {
 
     try {
       const todos = await AlumnoService.getAlumnos();
-      const inscritos = await InscripcionService.getPorCurso(curso.id);
+      const inscritos = await InscripcionService.getAlumnosPorCurso(curso.id);
       const disponibles = todos.filter((a) => !inscritos.some((i) => i.id === a.id));
       setAlumnosDisponibles(disponibles);
     } catch (error) {
@@ -84,9 +84,10 @@ function Cursos() {
 
     try {
       await InscripcionService.matricular({
-        alumnoId: alumnoSeleccionado,
-        cursoId: cursoSeleccionado.id,
-      });
+      alumnoId: alumnoSeleccionado.toString(),
+      cursoId: cursoSeleccionado.id.toString(),
+    });
+
       const alumnos = await InscripcionService.getPorCurso(cursoSeleccionado.id);
       setAlumnosPorCurso((prev) => ({ ...prev, [cursoSeleccionado.id]: alumnos }));
       setModalVisible(false);
