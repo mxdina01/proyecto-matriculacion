@@ -48,6 +48,12 @@ function Alumnos() {
     `${alumno.nombres} ${alumno.apellidos}`.toLowerCase().includes(search.toLowerCase())
   );
 
+// cerrar modal
+const closeModal = () => {
+  setModalVisible(false);
+  setModalAlumno(null);
+};
+
 // modal
 const handleView = async (alumno) => {
   try {
@@ -57,14 +63,7 @@ const handleView = async (alumno) => {
   } catch (err) {
     console.error(err);
     alert("No se pudo cargar la información del alumno");
-  } 
-
-  // cerrar modal
-const closeModal = () => {
-  setModalVisible(false);
-  setModalAlumno(null);
-};
-
+  }
 };
 
 
