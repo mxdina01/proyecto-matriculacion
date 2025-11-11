@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import AlumnoService from "../../services/AlumnoService";
+import InscripcionService from "../../services/InscripcionService";
 import "../styles/Alumnos.css";
 import "../styles/Buttons.css";
 
@@ -57,14 +58,16 @@ const closeModal = () => {
 // modal
 const handleView = async (alumno) => {
   try {
-    const data = await AlumnoService.getAlumnoById(alumno.id); // trae info completa
-    setModalAlumno(data);
+    const data = await AlumnoService.getAlumnoById(alumno.id); // info básica
+    const cursos = await InscripcionService.getCursosPorAlumno(alumno.id); // cursos donde está matriculado
+    setModalAlumno({ ...data, cursos }); // agregamos cursos al modalAlumno
     setModalVisible(true);
   } catch (err) {
     console.error(err);
     alert("No se pudo cargar la información del alumno");
   }
 };
+
 
 
   return (
@@ -75,14 +78,28 @@ const handleView = async (alumno) => {
       </Link>
             {/* Modal */}
       {modalVisible && modalAlumno && (
-        <div className="modal-overlay" onClick={closeModal}>
-          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-            <h3>{modalAlumno.nombres} {modalAlumno.apellidos}</h3>
-            <p><strong>CI:</strong> {modalAlumno.ci}</p>
-            <button className="btn btn-outlined" onClick={closeModal}>Cerrar</button>
-          </div>
+  <div className="modal-overlay" onClick={closeModal}>
+    <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+      <h3>{modalAlumno.nombres} {modalAlumno.apellidos}</h3>
+      <p><strong>CI:</strong> {modalAlumno.ci}</p>
+      
+      {modalAlumno.cursos && modalAlumno.cursos.length > 0 ? (
+        <div>
+          <strong>Cursos matriculados:</strong>
+          <ul>
+            {modalAlumno.cursos.map((c) => (
+              <li key={c.id}>{c.nombre}</li>
+            ))}
+          </ul>
         </div>
+      ) : (
+        <p>No está matriculado en ningún curso.</p>
       )}
+
+      <button className="btn btn-outlined" onClick={closeModal}>Cerrar</button>
+    </div>
+  </div>
+)}
 
       <div className="alumnos-list-container">
         <input
