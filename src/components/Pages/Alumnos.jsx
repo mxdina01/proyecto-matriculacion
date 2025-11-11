@@ -52,7 +52,7 @@ function Alumnos() {
 
   // 5. Filtrado de alumnos (Lógica de búsqueda)
   const filteredAlumnos = alumnos.filter((alumno) =>
-    `${alumno.nombre} ${alumno.apellido}`
+    `${alumno.nombres} ${alumno.apellidos}`
       .toLowerCase()
       .includes(search.toLowerCase())
   );
