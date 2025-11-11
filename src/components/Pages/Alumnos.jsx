@@ -83,7 +83,7 @@ function Alumnos() {
         {/* CONDICIÓN CORREGIDA: Muestra "No hay alumnos" SOLO si NO está cargando,
           NO hay un error de conexión, Y la lista filtrada está vacía. 
         */}
-        {!loading && !error && filteredAlumno.length === 0 && (
+        {!loading && !error && filteredAlumnos.length === 0 && (
           <p>No hay alumnos que coincidan.</p>
         )}
 
