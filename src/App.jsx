@@ -18,7 +18,7 @@ const routes = [
   { path: "/register", element: <Register />, hideHeader: true},
   { path: "/home", element: <Home />, hideHeader: false},
   { path: "/alumnos", element: <Alumnos />, hideHeader: false},
-  { path: "/agregaralumnos", element: <AgregarAlumno/>, hideHeader: false},
+  { path: "/agregaralumno", element: <AgregarAlumno/>, hideHeader: false},
   { path: "/cursos", element: <Cursos/>, hideHeader: false},
   { path: "/matricular", element: <Matricular/>, hideHeader: false},
 
