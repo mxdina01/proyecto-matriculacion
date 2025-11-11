@@ -100,22 +100,6 @@
   font-weight: 600;
 }
 
-.btn-submit,
-.form-group button {
-  background-color: #3a5f9e;
-  color: white;
-  border: none;
-  padding: 12px;
-  border-radius: 8px;
-  font-size: 15px;
-  cursor: pointer;
-  transition: background 0.2s ease, transform 0.2s ease;
-}
-
-.btn-submit:hover,
-.form-group button:hover {
-  background-color: #2f4970;
-}
 
 .mensaje {
   margin-top: 15px;

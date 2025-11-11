@@ -5,47 +5,51 @@ import Header from "./components/Header";
 import Home from "./components/Pages/Home";
 import AgregarAlumno from "./components/Pages/AgregarAlumno";
 import Alumnos from "./components/Pages/Alumnos";
-import Reportes from "./components/Pages/Reportes";
 import Matricular from "./components/Pages/Matricular";
 import Cursos from "./components/Pages/Cursos";
 import Login from "./components/Pages/Login";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Register from "./components/Pages/Register";
 
+//Lista de rutas + ocultar headers
+const routes = [
+  { path: "/", element: <Login />, hideHeader: true },
+  { path: "/login", element: <Login />, hideHeader: true },
+  { path: "/register", element: <Register />, hideHeader: true},
+  { path: "/home", element: <Home />, hideHeader: false},
+  { path: "/alumnos", element: <Alumnos />, hideHeader: false},
+  { path: "/agregaralumnos", element: <AgregarAlumno/>, hideHeader: false},
+  { path: "/cursos", element: <Cursos/>, hideHeader: false},
+  { path: "/matricular", element: <Matricular/>, hideHeader: false},
 
+]
 
+function AppContent(){
 
-function AppContent() {
+//fetchea en cual ubi se encuentra el user currently
   const location = useLocation();
-  const hideHeaderRoutes = ["/login", "/register", "/"];
-  const shouldHideHeader = hideHeaderRoutes.includes(location.pathname);
 
-  return (
+//busca la ruta actual een nuestra lista y ve si debemos ocultar el header
+const route = routes.find(r =>r.path === location.pathname);
+const hideHeader = route?.hideHeader;
+return (
   <>
-    {!shouldHideHeader && <Header /> }
-    
-     
-  <Routes>    
-    <Route path="/" element={<Login />} />
-    <Route path="/login" element={<Login />} />
-    <Route path="/register" element={<Register />} />
-    <Route path="/home" element={<Home />} />
-    <Route path="/alumnos" element={<Alumnos />} />
-    <Route path="/agregaralumno" element={<AgregarAlumno />} />
-    <Route path="/matricular" element={<Matricular />} />
-    <Route path="/reportes" element={<Reportes />} />
-    <Route path="/cursos" element={<Cursos />} />
-</Routes>
-    </>
-  );
-};
+    {!hideHeader && <Header />}
+    <Routes>
+      {/* renderizado dinamico de rutass */}
+      {routes.map(r => (
+        <Route key={r.path} path={r.path} element={r.element}/>
+      ))}
+    </Routes>
+  </>
+);
 
-function App(){
-  return (
-    <Router>
-      <AppContent />
-    </Router>
-  );
 }
-
-export default App;
+    
+  export default function App(){
+    return (
+      <Router>
+        <AppContent />
+      </Router>
+    );
+  }

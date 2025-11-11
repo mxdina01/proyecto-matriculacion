@@ -27,7 +27,6 @@ function Header(){
         <nav className="nav">
         <NavLink to="/home" end>INICIO</NavLink>
         <NavLink to="/alumnos">ALUMNOS</NavLink>
-        <NavLink to="/reportes">MATRICULAS</NavLink>
         <NavLink to="/cursos">CURSOS</NavLink>
       </nav>
 

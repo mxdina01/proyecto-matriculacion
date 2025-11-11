@@ -3,12 +3,15 @@ import AuthService from "../../services/AuthService";
 import { useNavigate, Link } from "react-router-dom";
 import "../styles/auth.css";
 
+//funcion para loginearse 
 function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
+
+//peticion a authservice
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
@@ -19,6 +22,8 @@ function Login() {
       setError(err.message);
     }
   };
+
+  //render de la pagina
 
   return (
     <div className="auth-page">

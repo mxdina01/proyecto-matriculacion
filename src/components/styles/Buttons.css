@@ -1,0 +1,54 @@
+
+/* Filled button - green */
+.btn-filled, button.btn-filled {
+  border: 3px solid #08936e !important;
+  background-color: #08936e !important;
+  color: white !important;
+  border-radius: 20px !important;
+  padding: 10px 20px !important;
+  font-weight: 600 !important;
+  font-size: 14px !important;
+  cursor: pointer !important;
+  transition: all 0.3s ease !important;
+}
+
+.btn-filled:hover, button.btn-filled:hover {
+  background-color: #067351 !important;
+  border-color: #067351 !important;
+}
+
+/* Outlined button - green border */
+.btn-outlined, button.btn-outlined {
+  border: 3px solid #08936e !important;
+  background-color: transparent !important;
+  color: #08936e !important;
+  border-radius: 20px !important;
+  padding: 10px 20px !important;
+  font-weight: 600 !important;
+  font-size: 14px !important;
+  cursor: pointer !important;
+  transition: all 0.3s ease !important;
+}
+
+.btn-outlined:hover, button.btn-outlined:hover {
+  background-color: #08936e !important;
+  color: white !important;
+}
+
+/* Danger button - red */
+.btn-danger, button.btn-danger {
+  border: 3px solid #e53935 !important;
+  background-color: #e53935 !important;
+  color: white !important;
+  border-radius: 20px !important;
+  padding: 10px 20px !important;
+  font-weight: 600 !important;
+  font-size: 14px !important;
+  cursor: pointer !important;
+  transition: all 0.3s ease !important;
+}
+
+.btn-danger:hover, button.btn-danger:hover {
+  background-color: #c62828 !important;
+  border-color: #c62828 !important;
+}

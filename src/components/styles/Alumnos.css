@@ -1,47 +1,86 @@
-.alumnos-page{
-    margin: 0;
-    padding: 0;
-    height: 100vh;
-    align-items: center;
-    display: flex;
-    flex-direction: column;
-  background-color: #f2f2f2;}
-
-
-.header-alumnos h2{
-
-    font-weight: 450; 
-    margin: 10px;
-    margin-top: 50px;
-    display: inline-block;
+/* Contenedor principal de la página */
+.alumnos-page {
+  margin: 0;
+  padding: 20px;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #f5f5f5;
+  font-family: 'Roboto', sans-serif;
 }
 
-.btn-secondary{
-
-font-size: 14px;
-padding:6px 10px ;
-margin-left: 20px;
-margin-top: 10px;
- background-color: rgb(101, 210, 174);
- text-decoration: none;
+/* Título */
+.alumnos-page h2 {
+  font-weight: 500;
+  margin: 20px 0;
+  font-size: 28px;
+  color: #333;
 }
 
-.lista-alumnos{
-    display: block;
-    max-width: 900px;
-    width: 100%;
-    background: #fff;
-    color: #555;
-    text-align: center;
-    padding: 40px 45px;
-    margin-top: 20px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 
+/* Contenedor de lista de alumnos */
+.alumnos-list-container {
+  width: 100%;
+  max-width: 900px;
+  background-color: #fff;
+  padding: 30px 40px;
+  margin-top: 20px;
+  border-radius: 10px;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
 }
 
-.tabla-alumnos th,
-.tabla-alumnos td {
-  padding: 12px 15px;
-  text-align: left;
+/* Input de búsqueda */
+.search-input {
+  padding: 10px 14px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  margin-bottom: 15px;
+  font-size: 14px;
+  outline: none;
+  width: 100%;
+  box-sizing: border-box;
+  transition: border-color 0.2s;
 }
 
+.search-input:focus {
+  border-color: #5c6bc0;
+}
+
+/* Mensajes de error o estado */
+.error-message {
+  color: #e53935;
+  font-weight: 500;
+  text-align: center;
+}
+
+/* Tarjetas de alumnos */
+.alumno-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 20px;
+  border-radius: 8px;
+  background-color: #fafafa;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+  transition: transform 0.2s;
+}
+
+.alumno-card:hover {
+  transform: translateY(-2px);
+}
+
+.card-buttons {
+  display: flex;
+  gap: 10px;
+}
+
+/* Texto dentro de la tarjeta */
+.alumno-card p {
+  margin: 0;
+  font-weight: 500;
+  color: #333;
+}
