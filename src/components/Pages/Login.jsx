@@ -14,12 +14,12 @@ function Login() {
 
 //peticion a authservice
   const handleSubmit = async (e) => {
-    e.preventDefault();
+    e.preventDefault(); //evita q la pag se recarge al enviar el form
     setError("");
     setLoading(true);
     try {
-      await AuthService.login(username, password);
-      navigate("/home");
+      await AuthService.login(username, password); //maneja el inicio de sesion
+      navigate("/home"); //si todo va bn
     } catch (err) {
       setError(err.message);
     } finally {
@@ -48,9 +48,9 @@ function Login() {
           onChange={(e) => setPassword(e.target.value)}
           required
         />
-        <button type="submit">Ingresar</button>
-        {error && <p style={{ color: "red" }}>{error}</p>}
-      </form>
+       <button type="submit" disabled={loading}> {/*que se desshabilite mientaas cargue y que cambie el text*/}
+  {loading ? "Ingresando..." : "Ingresar"}
+</button>
 
       <p>
         ¿No tenés cuenta?{" "}

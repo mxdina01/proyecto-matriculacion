@@ -9,18 +9,19 @@ import inscripciones from "../../assets/matricularse.png";
 import { Link, useNavigate } from "react-router-dom";
 import AuthService from "../../services/AuthService";
 
+
 function Home() {
   const navigate = useNavigate();
-  const user = AuthService.getCurrentUser();
+  const user = AuthService.getCurrentUser(); //revisa cual user se encuentra logged in atm
 
-  const handleLogout = () => {
+  const handleLogout = () => { //lleva al user a otra pag cuando hace logout 
     AuthService.logout();
     navigate("/login");
   };
 
-  return (
+  return ( 
     <div className="home-container">
-      <div className="top">
+      <div className="top"> {/*encabezado con titulos y descrip*/}
         <h1>Sistema de Matriculación PSIS</h1>
         <p>Gestión de alumnos, listado de cursos y matriculaciones.</p>
       </div>
