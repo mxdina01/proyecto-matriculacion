@@ -4,7 +4,7 @@ import { BrowserRouter as Router, Routes, Route, useLocation, matchPath } from "
 import Header from "./components/Header";
 import ProtectedRoute from "./components/ProtectedRoute";
 
-// 💤 Lazy loading: las páginas se cargan solo cuando se visitan
+//lazy loading para que solo carguen en ese isntante las pags que estan siendo visitadas
 const Home = lazy(() => import("./components/Pages/Home"));
 const AgregarAlumno = lazy(() => import("./components/Pages/AgregarAlumno"));
 const Alumnos = lazy(() => import("./components/Pages/Alumnos"));
@@ -14,13 +14,11 @@ const Login = lazy(() => import("./components/Pages/Login"));
 const Register = lazy(() => import("./components/Pages/Register"));
 const EditarAlumno = lazy(() => import("./components/Pages/EditarAlumno"));
 
-// 🗺️ Lista de rutas con control de header
+// rutas + header control
 const routes = [
   { path: "/", element: <Login />, hideHeader: true },
   { path: "/login", element: <Login />, hideHeader: true },
   { path: "/register", element: <Register />, hideHeader: true },
-
-  // Todas las demás rutas estarán protegidas
   { path: "/home", element: <Home />, hideHeader: false },
   { path: "/alumnos", element: <Alumnos />, hideHeader: false },
   { path: "/agregaralumno", element: <AgregarAlumno />, hideHeader: false },
@@ -30,27 +28,27 @@ const routes = [
 ];
 
 function AppContent() {
-  const location = useLocation();
+  const location = useLocation(); //hook que devuelve location
 
-  // Busca la ruta actual y decide si ocultar el Header
+  //fetchea la current ubiccacion + mira si se oculta o no el header
   const route = routes.find((r) => matchPath({ path: r.path, end: true }, location.pathname));
   const hideHeader = route?.hideHeader;
 
   return (
     <>
+
+     {/* para mostrar el header nms si la variable de hideheader es false*/}
       {!hideHeader && <Header />}
 
-      {/* Suspense muestra el fallback mientras carga cada página */}
+      {/* manejo de carga */}
       <Suspense fallback={<div style={{ textAlign: "center", marginTop: "50px" }}>Cargando...</div>}>
         <Routes>
-          {/* Rutas públicas (login y register) */}
           {routes
             .filter((r) => r.hideHeader)
             .map((r) => (
               <Route key={r.path} path={r.path} element={r.element} />
             ))}
 
-          {/* Rutas protegidas */}
           <Route element={<ProtectedRoute />}>
             {routes
               .filter((r) => !r.hideHeader)
