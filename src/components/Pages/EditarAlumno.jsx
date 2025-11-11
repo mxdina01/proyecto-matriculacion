@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams, Link } from "react-router-dom";
 import AlumnoService from "../../services/AlumnoService";
-import "../styles/Alumnos.css";
+import "../styles/EditarAlumno.css";
 import "../styles/Buttons.css";
 
 // Página para editar un alumno existente

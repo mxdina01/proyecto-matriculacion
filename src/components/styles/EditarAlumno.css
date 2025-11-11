@@ -1,0 +1,85 @@
+/* EditarAlumno.css */
+
+.alumnos-page {
+  max-width: 500px;
+  margin: 40px auto;
+  padding: 30px;
+  background-color: #fff; /* fondo blanco */
+  border-radius: 12px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+  font-family: 'Roboto', sans-serif;
+}
+
+.alumnos-page h2 {
+  text-align: center;
+  color: #48194a; /* mismo morado que el header de tu app */
+  margin-bottom: 25px;
+}
+
+.alumno-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.alumno-form input {
+  padding: 10px 12px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 15px;
+  transition: all 0.3s ease;
+}
+
+.alumno-form input:focus {
+  border-color: #935a99; /* color morado principal */
+  box-shadow: 0 0 5px rgba(147, 90, 153, 0.3);
+  outline: none;
+}
+
+.card-buttons {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.card-buttons .btn {
+  flex: 1;
+  margin: 0 5px;
+  padding: 10px;
+  font-size: 15px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.card-buttons .btn-filled {
+  background-color: #935a99;
+  color: #fff;
+  border: none;
+}
+
+.card-buttons .btn-filled:hover {
+  background-color: #7b477f;
+}
+
+.card-buttons .btn-outlined {
+  background-color: #fff;
+  color: #935a99;
+  border: 2px solid #935a99;
+}
+
+.card-buttons .btn-outlined:hover {
+  background-color: #f7f0f7;
+}
+
+.error-message {
+  margin-top: 15px;
+  color: #d9534f; /* rojo alerta */
+  font-weight: 500;
+  text-align: center;
+}
+
+p {
+  font-size: 14px;
+  color: #555;
+}
