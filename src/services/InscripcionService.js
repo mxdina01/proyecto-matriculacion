@@ -8,10 +8,12 @@ const InscripcionService = {
     try {
       const res = await fetch(`${API}/matricular`, {
         method: "POST",
-        headers: AuthService.getAuthHeaders(),
+        headers: {
+          ...AuthService.getAuthHeaders(),
+          "Content-Type": "application/json"
+        },
         body: JSON.stringify({ alumnoId, cursoId })
       });
-
       const data = await res.json().catch(() => ({}));
       if (!res.ok) throw new Error(data.message || "Error al matricular alumno");
       return data;
@@ -21,13 +23,13 @@ const InscripcionService = {
     }
   },
 
-  // Obtener alumnos de un curso (reporte completo)
+  // Obtener alumnos de un curso
   getAlumnosPorCurso: async (cursoId) => {
     try {
       const res = await fetch(`${API}/reporte/alumnos-por-curso/${cursoId}`, {
         headers: AuthService.getAuthHeaders()
       });
-      const data = await res.json().catch(() => ({}));
+      const data = await res.json().catch(() => ([]));
       if (!res.ok) throw new Error(data.message || "Error al obtener alumnos por curso");
       return data;
     } catch (error) {
@@ -36,13 +38,13 @@ const InscripcionService = {
     }
   },
 
-  // Obtener cursos de un alumno (reporte completo)
+  // Obtener cursos de un alumno
   getCursosPorAlumno: async (alumnoId) => {
     try {
       const res = await fetch(`${API}/reporte/cursos-por-alumno/${alumnoId}`, {
         headers: AuthService.getAuthHeaders()
       });
-      const data = await res.json().catch(() => ({}));
+      const data = await res.json().catch(() => ([]));
       if (!res.ok) throw new Error(data.message || "Error al obtener cursos por alumno");
       return data;
     } catch (error) {
@@ -51,39 +53,10 @@ const InscripcionService = {
     }
   },
 
-  // Endpoints antiguos si los necesitas
-  getPorCurso: async (cursoId) => {
+  // Eliminar inscripción por ID
+  eliminar: async (inscripcionId) => {
     try {
-      const res = await fetch(`${API}/por-curso/${cursoId}`, {
-        headers: AuthService.getAuthHeaders()
-      });
-      const data = await res.json().catch(() => ({}));
-      if (!res.ok) throw new Error(data.message || "Error al obtener inscripciones por curso");
-      return data;
-    } catch (error) {
-      console.error("InscripcionService.getPorCurso:", error);
-      throw error;
-    }
-  },
-
-  getPorAlumno: async (alumnoId) => {
-    try {
-      const res = await fetch(`${API}/por-alumno/${alumnoId}`, {
-        headers: AuthService.getAuthHeaders()
-      });
-      const data = await res.json().catch(() => ({}));
-      if (!res.ok) throw new Error(data.message || "Error al obtener inscripciones por alumno");
-      return data;
-    } catch (error) {
-      console.error("InscripcionService.getPorAlumno:", error);
-      throw error;
-    }
-  },
-
-  // Eliminar inscripción
-  eliminar: async (id) => {
-    try {
-      const res = await fetch(`${API}/${id}`, {
+      const res = await fetch(`${API}/${inscripcionId}`, {
         method: "DELETE",
         headers: AuthService.getAuthHeaders()
       });

@@ -1,27 +1,27 @@
 import React, { useState, useEffect } from "react";
 import "../styles/Cursos.css";
+import "../styles/Buttons.css";
 import CursoService from "../../services/CursoService";
 import InscripcionService from "../../services/InscripcionService";
 import AlumnoService from "../../services/AlumnoService";
-import "../styles/Buttons.css";
 
 function Cursos() {
-  // ESTADOS PRINCIPALES
+  // --- ESTADOS PRINCIPALES ---
   const [cursos, setCursos] = useState([]);
   const [loading, setLoading] = useState(true);
   const [mensaje, setMensaje] = useState("");
 
-  // Alumnos por curso
+  // --- ALUMNOS POR CURSO ---
   const [alumnosPorCurso, setAlumnosPorCurso] = useState({});
   const [cargandoAlumnos, setCargandoAlumnos] = useState({});
 
-  // Modal matriculación
+  // --- MODAL MATRICULACIÓN ---
   const [modalVisible, setModalVisible] = useState(false);
   const [cursoSeleccionado, setCursoSeleccionado] = useState(null);
   const [alumnosDisponibles, setAlumnosDisponibles] = useState([]);
   const [alumnoSeleccionado, setAlumnoSeleccionado] = useState("");
 
-  // BUSQUEDA CURSOS POR ALUMNO
+  // --- BUSQUEDA CURSOS POR ALUMNO ---
   const [busquedaAlumno, setBusquedaAlumno] = useState("");
   const [resultadosBusqueda, setResultadosBusqueda] = useState([]);
   const [alumnoBuscado, setAlumnoBuscado] = useState(null);
@@ -52,7 +52,8 @@ function Cursos() {
 
     setCargandoAlumnos((prev) => ({ ...prev, [cursoId]: true }));
     try {
-      const alumnos = await InscripcionService.getAlumnosPorCurso(cursoId);
+      // Usar getPorCurso para obtener ID de inscripciones
+      const alumnos = await InscripcionService.getPorCurso(cursoId);
       setAlumnosPorCurso((prev) => ({ ...prev, [cursoId]: alumnos }));
     } catch (error) {
       console.error(error);
@@ -71,7 +72,9 @@ function Cursos() {
     try {
       const todos = await AlumnoService.getAlumnos();
       const inscritos = await InscripcionService.getAlumnosPorCurso(curso.id);
-      const disponibles = todos.filter((a) => !inscritos.some((i) => i.id === a.id));
+      const disponibles = todos.filter(
+        (a) => !inscritos.some((i) => i.id === a.id)
+      );
       setAlumnosDisponibles(disponibles);
     } catch (error) {
       console.error(error);
@@ -81,14 +84,14 @@ function Cursos() {
 
   const matricularAlumno = async () => {
     if (!alumnoSeleccionado) return;
-
     try {
       await InscripcionService.matricular({
         alumnoId: alumnoSeleccionado.toString(),
         cursoId: cursoSeleccionado.id.toString(),
       });
 
-      const alumnos = await InscripcionService.getAlumnosPorCurso(cursoSeleccionado.id);
+      // Actualizar lista de alumnos en la card
+      const alumnos = await InscripcionService.getPorCurso(cursoSeleccionado.id);
       setAlumnosPorCurso((prev) => ({ ...prev, [cursoSeleccionado.id]: alumnos }));
       setModalVisible(false);
     } catch (error) {
@@ -98,12 +101,12 @@ function Cursos() {
   };
 
   // ------------------- ELIMINAR MATRICULA -------------------
-  const eliminarMatricula = async (alumnoId, cursoId) => {
+  const eliminarMatricula = async (inscripcionId, cursoId) => {
     if (!window.confirm("¿Seguro que deseas eliminar esta matrícula?")) return;
 
     try {
-      await InscripcionService.eliminar({ alumnoId, cursoId });
-      const alumnos = await InscripcionService.getAlumnosPorCurso(cursoId);
+      await InscripcionService.eliminar(inscripcionId);
+      const alumnos = await InscripcionService.getPorCurso(cursoId);
       setAlumnosPorCurso((prev) => ({ ...prev, [cursoId]: alumnos }));
     } catch (error) {
       console.error(error);
@@ -138,7 +141,7 @@ function Cursos() {
         return;
       }
       try {
-        const data = await InscripcionService.getPorAlumno(alumnoBuscado.id);
+        const data = await InscripcionService.getCursosPorAlumno(alumnoBuscado.id);
         setCursosPorAlumno(data);
       } catch (error) {
         console.error(error);
@@ -222,12 +225,12 @@ function Cursos() {
                       <p>No hay alumnos matriculados.</p>
                     ) : (
                       <ul>
-                        {alumnosPorCurso[curso.id].map((a) => (
-                          <li key={a.id}>
-                            {a.nombres} {a.apellidos}{" "}
+                        {alumnosPorCurso[curso.id].map((i) => (
+                          <li key={i.id}>
+                            {i.alumno.nombres} {i.alumno.apellidos}{" "}
                             <button
                               className="btn-eliminar"
-                              onClick={() => eliminarMatricula(a.id, curso.id)}
+                              onClick={() => eliminarMatricula(i.id, curso.id)}
                             >
                               Eliminar
                             </button>
