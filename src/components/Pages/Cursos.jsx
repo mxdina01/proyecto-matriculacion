@@ -11,8 +11,8 @@ function Cursos() {
   const [loading, setLoading] = useState(true);
   const [mensaje, setMensaje] = useState("");
 
-  // --- ALUMNOS POR CURSO ---
-  const [alumnosPorCurso, setAlumnosPorCurso] = useState({});
+  // --- INSCRIPCIONES POR CURSO ---
+  const [inscripcionesPorCurso, setInscripcionesPorCurso] = useState({});
   const [cargandoAlumnos, setCargandoAlumnos] = useState({});
 
   // --- MODAL MATRICULACIÓN ---
@@ -45,19 +45,18 @@ function Cursos() {
 
   // ------------------- TOGGLE ALUMNOS POR CURSO -------------------
   const toggleAlumnos = async (cursoId) => {
-    if (alumnosPorCurso[cursoId]) {
-      setAlumnosPorCurso((prev) => ({ ...prev, [cursoId]: null }));
+    if (inscripcionesPorCurso[cursoId]) {
+      setInscripcionesPorCurso((prev) => ({ ...prev, [cursoId]: null }));
       return;
     }
 
     setCargandoAlumnos((prev) => ({ ...prev, [cursoId]: true }));
     try {
-      // Usar getPorCurso para obtener ID de inscripciones
-      const alumnos = await InscripcionService.getPorCurso(cursoId);
-      setAlumnosPorCurso((prev) => ({ ...prev, [cursoId]: alumnos }));
+      const inscripciones = await InscripcionService.getPorCurso(cursoId);
+      setInscripcionesPorCurso((prev) => ({ ...prev, [cursoId]: inscripciones }));
     } catch (error) {
       console.error(error);
-      setAlumnosPorCurso((prev) => ({ ...prev, [cursoId]: [] }));
+      setInscripcionesPorCurso((prev) => ({ ...prev, [cursoId]: [] }));
     } finally {
       setCargandoAlumnos((prev) => ({ ...prev, [cursoId]: false }));
     }
@@ -84,15 +83,20 @@ function Cursos() {
 
   const matricularAlumno = async () => {
     if (!alumnoSeleccionado) return;
+
     try {
       await InscripcionService.matricular({
         alumnoId: alumnoSeleccionado.toString(),
         cursoId: cursoSeleccionado.id.toString(),
       });
 
-      // Actualizar lista de alumnos en la card
-      const alumnos = await InscripcionService.getPorCurso(cursoSeleccionado.id);
-      setAlumnosPorCurso((prev) => ({ ...prev, [cursoSeleccionado.id]: alumnos }));
+      // Actualizar inscripciones del curso
+      const inscripciones = await InscripcionService.getPorCurso(cursoSeleccionado.id);
+      setInscripcionesPorCurso((prev) => ({
+        ...prev,
+        [cursoSeleccionado.id]: inscripciones,
+      }));
+
       setModalVisible(false);
     } catch (error) {
       console.error(error);
@@ -106,8 +110,8 @@ function Cursos() {
 
     try {
       await InscripcionService.eliminar(inscripcionId);
-      const alumnos = await InscripcionService.getPorCurso(cursoId);
-      setAlumnosPorCurso((prev) => ({ ...prev, [cursoId]: alumnos }));
+      const inscripciones = await InscripcionService.getPorCurso(cursoId);
+      setInscripcionesPorCurso((prev) => ({ ...prev, [cursoId]: inscripciones }));
     } catch (error) {
       console.error(error);
       alert("No se pudo eliminar la matrícula.");
@@ -212,20 +216,20 @@ function Cursos() {
 
                 <div className="card-buttons">
                   <button onClick={() => toggleAlumnos(curso.id)}>
-                    {alumnosPorCurso[curso.id] ? "Ocultar alumnos" : "Ver alumnos"}
+                    {inscripcionesPorCurso[curso.id] ? "Ocultar alumnos" : "Ver alumnos"}
                   </button>
                   <button onClick={() => abrirModalMatricula(curso)}>Matricular alumno</button>
                 </div>
 
                 {cargandoAlumnos[curso.id] && <p>Cargando alumnos...</p>}
 
-                {alumnosPorCurso[curso.id] && (
+                {inscripcionesPorCurso[curso.id] && (
                   <div className="alumnos-lista">
-                    {alumnosPorCurso[curso.id].length === 0 ? (
+                    {inscripcionesPorCurso[curso.id].length === 0 ? (
                       <p>No hay alumnos matriculados.</p>
                     ) : (
                       <ul>
-                        {alumnosPorCurso[curso.id].map((i) => (
+                        {inscripcionesPorCurso[curso.id].map((i) => (
                           <li key={i.id}>
                             {i.alumno.nombres} {i.alumno.apellidos}{" "}
                             <button
