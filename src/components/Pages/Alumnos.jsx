@@ -114,7 +114,6 @@ const closeModal = () => {
           <div className="modal-content" onClick={(e) => e.stopPropagation()}>
             <h3>{modalAlumno.nombres} {modalAlumno.apellidos}</h3>
             <p><strong>CI:</strong> {modalAlumno.ci}</p>
-            <p><strong>Curso:</strong> {modalAlumno.curso || "No asignado"}</p>
             <button className="btn btn-outlined" onClick={closeModal}>Cerrar</button>
           </div>
         </div>
