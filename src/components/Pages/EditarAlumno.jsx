@@ -1,38 +1,115 @@
-// AlumnoService.js
-const API = "https://psis-2025.onrender.com/api/alumnos";
+import React, { useEffect, useState } from "react";
+import { useNavigate, useParams, Link } from "react-router-dom";
+import AlumnoService from "../../services/AlumnoService";
+import "../styles/Alumnos.css";
+import "../styles/Buttons.css";
 
-const AlumnoService = {
-  // ...otras funciones
+// Página para editar un alumno existente
+function EditarAlumno() {
+  // 1. Estados principales
+  const [alumno, setAlumno] = useState({
+    nombres: "",
+    apellidos: "",
+    ci: "",
+    email: "",
+  });
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
 
-  // Obtener un alumno por su ID
-  getAlumnoById: async (id) => {
+  const navigate = useNavigate();
+  const { id } = useParams(); // obtiene el id desde la URL
+
+  // 2. Función para cargar los datos del alumno
+  const fetchAlumno = async () => {
+    setLoading(true);
+    setError("");
     try {
-      const res = await fetch(`${API}/${id}`, {
-        headers: AuthService.getAuthHeaders(),
-      });
-      if (!res.ok) throw new Error("Error al obtener el alumno");
-      return await res.json();
-    } catch (error) {
-      console.error("AlumnoService.getAlumnoById:", error);
-      throw error;
+      const data = await AlumnoService.getAlumnoById(id); // necesitas agregar esta función en AlumnoService
+      setAlumno(data);
+    } catch (err) {
+      console.error("Error al cargar alumno:", err);
+      setError("No se pudo cargar el alumno. Verifique la conexión.");
+    } finally {
+      setLoading(false);
     }
-  },
+  };
 
-  // Actualizar alumno
-  updateAlumno: async (id, alumno) => {
+  // 3. useEffect para cargar alumno al montar el componente
+  useEffect(() => {
+    fetchAlumno();
+  }, [id]);
+
+  // 4. Función para manejar cambios en los inputs
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setAlumno((prev) => ({ ...prev, [name]: value }));
+  };
+
+  // 5. Función para enviar los cambios al backend
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError("");
     try {
-      const res = await fetch(`${API}/${id}`, {
-        method: "PUT",
-        headers: AuthService.getAuthHeaders(),
-        body: JSON.stringify(alumno),
-      });
-      if (!res.ok) throw new Error("Error al actualizar alumno");
-      return await res.json();
-    } catch (error) {
-      console.error("AlumnoService.updateAlumno:", error);
-      throw error;
+      await AlumnoService.updateAlumno(id, alumno);
+      alert("Alumno actualizado correctamente.");
+      navigate("/alumnos"); // vuelve a la lista de alumnos
+    } catch (err) {
+      console.error("Error al actualizar alumno:", err);
+      setError("No se pudo actualizar el alumno.");
     }
-  },
-};
+  };
 
-export default AlumnoService;
+  // 6. Renderizado del componente
+  return (
+    <div className="alumnos-page">
+      <h2>Editar Alumno</h2>
+
+      {loading ? (
+        <p>Cargando datos del alumno...</p>
+      ) : (
+        <form onSubmit={handleSubmit} className="alumno-form">
+          <input
+            type="text"
+            name="nombres"
+            placeholder="Nombres"
+            value={alumno.nombres}
+            onChange={handleChange}
+            required
+          />
+          <input
+            type="text"
+            name="apellidos"
+            placeholder="Apellidos"
+            value={alumno.apellidos}
+            onChange={handleChange}
+            required
+          />
+          <input
+            type="text"
+            name="ci"
+            placeholder="Cédula"
+            value={alumno.ci}
+            onChange={handleChange}
+            required
+          />
+          <input
+            type="email"
+            name="email"
+            placeholder="Email"
+            value={alumno.email}
+            onChange={handleChange}
+          />
+          <div className="card-buttons">
+            <button type="submit" className="btn btn-filled">Guardar cambios</button>
+            <Link to="/alumnos">
+              <button type="button" className="btn btn-outlined">Cancelar</button>
+            </Link>
+          </div>
+          {error && <p className="error-message">{error}</p>}
+        </form>
+      )}
+    </div>
+  );
+}
+
+export default EditarAlumno;
