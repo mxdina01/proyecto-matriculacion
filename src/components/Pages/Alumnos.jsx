@@ -94,7 +94,7 @@ function Alumnos() {
               {alumno.nombres} {alumno.apellidos}
             </p>
             <div className="card-buttons">
-              <Link to={`/alumnos/editaralumno/${alumno.id}`}>
+              <Link to={`/editaralumno/${alumno.id}`}>
                 <button className="btn btn-outlined">Editar</button>
               </Link>
               <button
