@@ -11,8 +11,7 @@ function Login() {
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
-
-//peticion a authservice
+  //peticion a authservice
   const handleSubmit = async (e) => {
     e.preventDefault(); //evita q la pag se recarge al enviar el form
     setError("");
@@ -28,40 +27,41 @@ function Login() {
   };
 
   //render de la pagina
-
   return (
     <div className="auth-page">
-    <div className="auth-container">
-      <h2>Iniciar Sesión</h2>
-      <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          placeholder="Usuario"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-          required
-        />
-        <input
-          type="password"
-          placeholder="Contraseña"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-        />
-       <button type="submit" disabled={loading}> {/*que se desshabilite mientaas cargue y que cambie el text*/}
-  {loading ? "Ingresando..." : "Ingresar"}
-</button>
+      <div className="auth-container">
+        <h2>Iniciar Sesión</h2>
 
-      <p>
-        ¿No tenés cuenta?{" "}
-        <Link to="/register">
-          Crear cuenta
-        </Link>
-      </p>
+        <form onSubmit={handleSubmit}>
+          <input
+            type="text"
+            placeholder="Usuario"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            required
+          />
+          <input
+            type="password"
+            placeholder="Contraseña"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
+          <button type="submit" disabled={loading}> {/*que se desshabilite mientaas cargue y que cambie el text*/}
+            {loading ? "Ingresando..." : "Ingresar"}
+          </button>
+          {error && <p style={{ color: "red" }}>{error}</p>}
+        </form>
+
+        <p>
+          ¿No tenés cuenta?{" "}
+          <Link to="/register">
+            Crear cuenta
+          </Link>
+        </p>
+      </div>
     </div>
-  </div>
   );
-  
 }
 
 export default Login;
